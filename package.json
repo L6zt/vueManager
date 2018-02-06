@@ -1,0 +1,30 @@
+{
+  "name": "vuem",
+  "version": "1.0.0",
+  "description": "question mannager",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --config ./dev/dev.js  --hot"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-sass": "^4.7.2",
+    "vue": "^2.5.13"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^2.30.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-vue-app": "^2.0.0",
+    "css-loader": "^0.28.9",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.20.1",
+    "url-loader": "^0.6.2",
+    "vue-loader": "^14.1.1",
+    "vue-style-loader": "^3.1.2",
+    "vue-template-compiler": "^2.5.13",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  }
+}
