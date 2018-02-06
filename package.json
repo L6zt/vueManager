@@ -4,12 +4,11 @@
   "description": "question mannager",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config ./dev/dev.js  --hot"
+    "dev": "webpack-dev-server --config ./dev/dev.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-sass": "^4.7.2",
     "vue": "^2.5.13"
   },
   "devDependencies": {
@@ -25,6 +24,8 @@
     "vue-style-loader": "^3.1.2",
     "vue-template-compiler": "^2.5.13",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
+    "webpack-dev-server": "^2.11.1",
+    "babel-preset-es2015": "^6.24.1",
+    "node-sass": "^4.7.2"
   }
 }

@@ -1,11 +1,14 @@
 const path = require('path')
-const  HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 module.exports = {
-	entry: './src/app',
+	entry: {
+		app: './src/app',
+		common: ['vue']
+	},
 	output: {
 		path: path.resolve(__dirname, '../dist'),
-		filename: 'app.[hash].js',
+		filename: '[name].[hash].js',
 		publicPath: '/'
 	},
 	module: {
@@ -24,7 +27,8 @@ module.exports = {
 			},
 			{
 				test: /\.js/,
-				use: ['babel-loader']
+				exclude: /node_modules/,
+				use: 'babel-loader'
 			},
 			{
 				test: /\.scss$/,
@@ -61,8 +65,11 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			template: './src/index.html',
+			template: path.resolve(__dirname,'../src/index.html'),
 			filename: 'index.html'
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'common'
 		}),
 		new webpack.HotModuleReplacementPlugin({
 		})
