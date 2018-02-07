@@ -1,15 +1,12 @@
 <template>
     <div>
-      index
-        <router-link to="/auth/login">login</router-link>
+        login
+        <router-link to="/">index</router-link>
     </div>
 </template>
 <script>
-import pageLoad from '../mixin/pageLoad'
+import pageLoad from '../../mixin/pageLoad'
 export default {
-	data () {
-		return {}
-    },
 	mixins: [pageLoad],
 	mounted () {
 		setTimeout(() => {

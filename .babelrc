@@ -1,3 +1,4 @@
 {
-  "presets": ["es2015","vue-app"]
+  "presets": ["es2015","vue-app"],
+  "plugins": ["syntax-dynamic-import"]
 }

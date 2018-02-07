@@ -1,9 +1,14 @@
 import Vue from 'vue'
-import index from './views/index.vue'
+import layout from './views/layout.vue'
+import store from './store'
+import Element from 'element-ui'
+import router from './router/index'
 const app = new Vue({
+	router,
+	store,
 	render(h) {
-		return h('index')
+		return h('layout')
 	},
-	components: {index}
+	components: {layout}
 })
 app.$mount('#app')
