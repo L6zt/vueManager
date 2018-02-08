@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section>auth</section>
+        <section>问题反馈</section>
         <router-view></router-view>
     </div>
 </template>

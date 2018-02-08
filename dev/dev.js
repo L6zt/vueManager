@@ -32,7 +32,7 @@ module.exports = {
 				use: 'babel-loader'
 			},
 			{
-				test: /\.scss$/,
+				test: /\.(scss|css)$/,
 				use: [
 					'style-loader',
 					{
@@ -56,7 +56,22 @@ module.exports = {
 						}
 					}
 				]
-			}
+			},
+			{
+				test: /\.ttf$/,
+				loader: "url-loader"
+			},
+			{
+				test: /\.(eot|woff)$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							limit: 1000
+						}
+					}
+				]
+			},
 		]
 	},
 	devServer: {

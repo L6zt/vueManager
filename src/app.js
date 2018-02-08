@@ -3,6 +3,7 @@ import layout from './views/layout.vue'
 import store from './store'
 import Element from 'element-ui'
 import router from './router/index'
+Vue.use(Element)
 const app = new Vue({
 	router,
 	store,
