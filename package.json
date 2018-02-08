@@ -4,7 +4,7 @@
   "description": "question mannager",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config ./dev/dev.js"
+    "dev": "webpack-dev-server --config ./dev/dev.js --hot"
   },
   "author": "",
   "license": "ISC",
