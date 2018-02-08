@@ -12,9 +12,11 @@
             <el-form-item
                label="用户名:"
                prop="userName"
+               size="small"
             >
                 <el-input
                         type="text"
+                        size="small"
                         v-model.trim="userForm.userName"
                         auto-complete="off"
                 >
@@ -24,9 +26,11 @@
             <el-form-item
                     label="密码:"
                     prop="passWord"
+                    size="small"
             >
                 <el-input
-                        type="text"
+                        type="password"
+                        size="small"
                         v-model.trim="userForm.passWord"
                         auto-complete="off"
                 >
@@ -35,8 +39,15 @@
             <el-form-item
                     label="验证码"
                     class="rand-code-box"
+                    size="small"
+                    prop="randCode"
             >
-                <el-input class="rand-code-in"></el-input>
+                <el-input
+                        class="rand-code-in"
+                        size="small"
+                        v-model.trim="userForm.randCode"
+                        auto-complete="off"
+                ></el-input>
                 <span class="login-rand-code" v-html="code" @click="getRandCode">
                 </span>
             </el-form-item>
@@ -64,7 +75,8 @@ export default {
 		return {
 			userForm: {
 				userName: null,
-                passWord: null
+                passWord: null,
+                randCode: null
             },
             userFormRule: {
 				userName: [
@@ -72,6 +84,9 @@ export default {
                 ],
                 passWord: [
                     {required: true, message: '密码不能为空'}
+                ],
+                randCode: [
+	                {required: true, message: '验证码不能为空'}
                 ]
             },
             code: ''
@@ -80,8 +95,8 @@ export default {
 	mixins: [pageLoad],
     computed: {
 	    status () {
-	      const {userForm} = this
-          if(userForm.userName && userForm.passWord) {
+	      const {userForm: {randCode, userName, passWord}} = this
+          if(randCode && userName && passWord) {
 	        return btnStatus[1]
           }  else {
 	            return btnStatus[0]
@@ -92,7 +107,7 @@ export default {
 		getRandCode () {
 			axios.get('http://koa.jcmark.cn/api/createToken/randomCode')
 				.then(({data}) => {
-					this.code = data.replace(/height=\"[0-9]+?\"/, 'height="40"')
+					this.code = data
 				})
         }
     },
@@ -113,7 +128,7 @@ export default {
         height: auto;
         top: 50%;
         left: 50%;
-        box-shadow: 0 0 3px $box-shadow-drak-color;
+        box-shadow: 0px 0px  3px $box-shadow-drak-color;
         transform: translate(-50%, -50%);
         &-title{
             font-size: $font-size-normal-title;
@@ -135,6 +150,7 @@ export default {
                 position: relative;
                 display: inline-block;
                 cursor: pointer;
+                float: right;
                 svg {
                     position: relative;
                 }
