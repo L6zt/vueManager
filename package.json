@@ -14,7 +14,12 @@
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
+  "browserslist": [
+    "ie > 8",
+    "> 5% in CN"
+  ],
   "devDependencies": {
+    "autoprefixer": "^7.2.5",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
@@ -23,6 +28,7 @@
     "css-loader": "^0.28.9",
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.7.2",
+    "postcss-loader": "^2.1.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.1",
     "url-loader": "^0.6.2",

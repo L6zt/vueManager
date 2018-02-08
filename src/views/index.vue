@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="special-cn">
       index
         <router-link to="/auth/login">login</router-link>
     </div>
@@ -18,3 +18,8 @@ export default {
 	}
 }
 </script>
+<style lang="scss">
+    .special-cn {
+        display: flex;
+    }
+</style>

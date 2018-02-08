@@ -52,7 +52,7 @@ export default {
             transition: all 500ms ease;
             background: red;
             &.is-active {
-                width: 97%
+                width: 99%
             }
         }
     }
