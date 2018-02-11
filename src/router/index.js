@@ -13,7 +13,7 @@ const routes = [
 	{path: '/user', component: () => import('../views/user/layOut.vue'),
 		children: [
 			{path: 'changePwd', component: () => import('../views/user/changePwd.vue')},
-			{path: 'modifyMsg', component: () => import('../views/user/modifyMsg.vue')},
+			{path: 'modifyMsg', component: () => import('../views/user//modifyMsg.vue')},
 			{path: '*', component: () => import('../views/404.vue')}
 		]
 	},

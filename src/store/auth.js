@@ -7,6 +7,9 @@ export default {
 	mutations: {
 		postUserMsg (state, playLoad) {
 			state.user = playLoad
+		},
+		edUserMsg (state, playLoad) {
+			Object.assign(state.user, playLoad)
 		}
 	},
 	actions: {
@@ -50,6 +53,25 @@ export default {
 			return upload({
 				url: `${baseUrl}/uploadFile/single`,
 				params: $2data(playLoad)
+			})
+		},
+		changeUserMsg({commit, state}, playLoad) {
+			return post({
+				url: `${baseUrl}/auth/modifyUserMsg`,
+				params: playLoad
+			}).then(({data, flag, errMsg}) => {
+				commit('edUserMsg',playLoad)
+				return {data, flag, state}
+			})
+		},
+		quit ({commit, state}, playLoad) {
+			return post({
+				url: `${baseUrl}/auth/quit`,
+			}).then(({data, flag, errMsg}) => {
+				if (flag === 1) {
+					commit('postUserMsg', null)
+				}
+				return {flag, data, errMsg}
 			})
 		}
 	},

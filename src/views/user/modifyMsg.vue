@@ -1,7 +1,7 @@
 <template>
     <div class="user-modify-container">
         <section class="person-img" v-if="!edImage">
-            <img src="../../assert/img/logo.png" alt="">
+            <img :src="user.pic" alt="">
             <i class="el-icon-plus upload-icon" @click="edImage = true"></i>
         </section>
         <el-dialog
@@ -21,11 +21,11 @@
                 class="user-modify-form"
                 label-position="left"
         >
-            <el-form-item label="昵称" prop="nickName">
-                <el-input v-model="user.nickName"></el-input>
+            <el-form-item label="昵称" prop="nick_name">
+                <el-input v-model="user.nick_name"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center" label-width="0" class="special-btn-box">
-                <el-button type="primary">
+                <el-button type="primary" @click="modifyBtn">
                     确定
                 </el-button>
             </el-form-item>
@@ -36,17 +36,18 @@
 <script>
 import clipImage from '../../components/clip/clipImage.vue'
 import auth from '../../mixin/auth'
+import defaultImg from '../../assert/img/logo.png'
 export default {
 	data () {
 		return {
 			edImage: false,
             isShowEdFlag: false,
             user: {
-				nickName: null,
-                path: null
+				nick_name: null,
+                pic: null
             },
             rules: {
-				nickName: [
+				nick_name: [
                     {required: true, message: '不能为空'}
                 ]
             }
@@ -56,7 +57,9 @@ export default {
     watch: {
 		'mx_userMsg': {
 			handler () {
-				this.user.nickName = (this.mx_userMsg || {}).name
+				this.user.nick_name = (this.mx_userMsg || {}).nick_name
+                this.user.pic = (this.mx_userMsg || {}).pic
+                this.user.pic = this.user.pic ?  `${this.user.pic}`: defaultImg
             },
 			deep: true,
 			immediate: true
@@ -67,9 +70,25 @@ export default {
 			this.$store.dispatch('auth/uploadFile', {
 				file
             }).then(({flag, data, errMsg}) => {
-				console.log(data)
+				this.user.pic = `${data.path}`
+                this.edImage = false
+            })
+        },
+	    modifyBtn(){
+			this.$refs['form'].validate().then(flag => {
+				if (flag) {
+					this.$store.dispatch('auth/changeUserMsg', {
+						pic: this.user.pic,
+                        nick_name: this.user.nick_name
+                    }).then(({flag, data, errMsg}) => {
+                            console.log(data, flag)
+                    })
+                }
             })
         }
+    },
+    created (){
+	    this.$store.commit('changeLoadStatus', false)
     },
 	components: {clipImage}
 }

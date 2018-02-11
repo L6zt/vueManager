@@ -8,7 +8,7 @@
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
                     <router-link to="/user/modifyMsg" class="user-link" tag="span">
-                        个人信息修改
+                        个人信息
                     </router-link>
                 </el-dropdown-item>
                 <el-dropdown-item>
@@ -16,11 +16,28 @@
                         密码修改
                     </router-link>
                 </el-dropdown-item>
+                <el-dropdown-item>
+                    <span class="user-link" @click="quit">
+                        退出
+                    </span>
+                </el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
     </section>
 </template>
 <script>
+export default {
+	methods: {
+		quit () {
+            this.$store.dispatch('auth/quit')
+                .then(({flag, data, errMsg}) => {
+            	    if (flag === 1) {
+            	    	this.$router.push('auth/login')
+                    }
+                })
+        }
+    }
+}
 </script>
 <style lang="scss">
 @import "../assert/css/index";
