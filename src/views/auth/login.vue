@@ -48,14 +48,19 @@
                         v-model.trim="userForm.randCode"
                         auto-complete="off"
                 ></el-input>
-                <span class="login-rand-code" v-html="code" @click="getRandCode">
-                </span>
+                <rand-code
+                        :html="code"
+                        :load="codeLoad"
+                        @sumbit="getRandCode"
+                        style=" height: 40px; position: absolute;right: 0"
+                ></rand-code>
             </el-form-item>
             <section class="handle-btn-box">
                 <el-button
                      :type="status.type"
                      :disabled="status.disabled"
                      size="small"
+                     @click="login"
                 >
                     登陆
                 </el-button>
@@ -65,7 +70,8 @@
 </template>
 <script>
 import pageLoad from '../../mixin/pageLoad'
-import axios from 'axios'
+import auth from '../../mixin/auth'
+import randCode from '../../components/randCode.vue'
 const btnStatus = [
 	    {type: 'danger', disabled: true},
         {type: 'success', disabled: false}
@@ -89,10 +95,11 @@ export default {
 	                {required: true, message: '验证码不能为空'}
                 ]
             },
-            code: ''
+            code: null,
+            codeLoad: false
         }
     },
-	mixins: [pageLoad],
+	mixins: [pageLoad, auth],
     computed: {
 	    status () {
 	      const {userForm: {randCode, userName, passWord}} = this
@@ -105,18 +112,54 @@ export default {
     },
     methods: {
 		getRandCode () {
-			axios.get('http://koa.jcmark.cn/api/createToken/randomCode')
-				.then(({data}) => {
-					this.code = data
-				})
+			if (!this.codeLoad) {
+				Object.assign(this, {codeLoad: true, code: null})
+				this.$store.dispatch('auth/getRandCode')
+					.then((data) => {
+						Object.assign(this, {code: data, codeLoad: false})
+					})
+            }
+        },
+        login () {
+			this.$refs['userForm'].validate().then(flag => {
+				const {userForm: {userName: name, passWord: password, randCode: code}} = this
+					this.$store.dispatch('auth/postLogin', {
+						name, password, code
+                    }).then(({flag, data, errMsg}) => {
+						if (flag === 1) {
+							this.$notify({
+								type: 'success',
+                                message: '登陆成功, 正在跳转',
+								duration: 300,
+								onClose: () => {
+									this.$router.push('/')
+                                }
+                            })
+                        } else {
+							this.$notify({
+                                type: 'error',
+                                message: errMsg
+                            })
+                        }
+                    }).catch(e => {
+						this.$notify({
+							type: 'error',
+							message: e
+						})
+                    })
+            })
         }
+    },
+	created () {
+        this.$mx_isLogin() && this.$router.push('/')
     },
 	mounted () {
 		setTimeout(() => {
 			this.$store.commit('changeLoadStatus', false)
 		}, 1000)
         this.getRandCode()
-	}
+	},
+    components: {randCode}
 }
 </script>
 <style lang="scss">
@@ -128,7 +171,7 @@ export default {
         height: auto;
         top: 50%;
         left: 50%;
-        box-shadow: 0px 0px  3px $box-shadow-drak-color;
+        box-shadow: 0px 0px  3px $box-shadow-dark-color;
         transform: translate(-50%, -50%);
         &-title{
             font-size: $font-size-normal-title;

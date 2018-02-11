@@ -1,0 +1,14 @@
+/**/
+@import "var";
+@mixin clear-fix {
+  &:after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+  &:before{
+   display: block;
+   content:  '';
+   clear: both
+  }
+}

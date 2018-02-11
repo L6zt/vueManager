@@ -1,19 +1,26 @@
 // 是否对应 后端状态
 import axios from 'axios'
-export const get = ({url, params}) =>{
+import {ajaxBaseUrl} from '../assert/js/config'
+export const baseUrl = ajaxBaseUrl
+export const normalGet = ({url, params = {}}) => {
+	return axios({
+		url,
+		method: 'get',
+		params
+	}).then(({data}) => {
+		return data
+	})
+}
+export const get = ({url, params = {}}) =>{
 	return axios({
 		url,
 		method: 'get',
 		params
 	}).then(({data: {flag, data, errMsg}}) => {
-		if (errMsg) {
-			throw (errMsg)
-		} else {
-			return {flag, data}
-		}
+		return {flag, data, errMsg}
 	})
 }
-export const post = ({url, params}) => {
+export const post = ({url, params = {}}) => {
 	return axios({
 		url,
 		method: 'post',
@@ -31,11 +38,7 @@ export const post = ({url, params}) => {
 			}
 		]
 	}).then(({data: {flag, data, errMsg}}) => {
-		if (errMsg) {
-			throw (errMsg)
-		} else {
-			return {flag, data}
-		}
+			return {flag, data, errMsg}
 	})
 }
 export const upload = ({url, params}) => {
@@ -47,20 +50,16 @@ export const upload = ({url, params}) => {
 		},
 		data: params,
 	}).then(({data: {flag, data, errMsg}}) => {
-		if (errMsg) {
-			throw (errMsg)
-		} else {
-			return {flag, data}
-		}
+		return {flag, data, errMsg}
 	})
 }
-export const formData = (data) => {
-	if (typeof window.formData === "undefined") {
+export const $2data = (data) => {
+	if (typeof window.FormData === "undefined") {
 		throw (new Error('not support formData'))
 	}
-	const nData = new formData()
+	const nData = new FormData()
 	for (let k in data) {
 		nData.append(k, data[k])
 	}
-	return formData()
+	return nData
 }
