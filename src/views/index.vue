@@ -5,8 +5,6 @@
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-message"></i>用户管理</template>
                     <el-menu-item index="user-list">管理用户</el-menu-item>
-                    <el-menu-item index="user-mg-list">管理经理人</el-menu-item>
-                    <el-menu-item index="user-solve-list">管理维修人</el-menu-item>
                 </el-submenu>
                 <el-submenu index="2">
                     <template slot="title"><i class="el-icon-menu"></i>事件</template>
@@ -16,22 +14,12 @@
                 </el-submenu>
             </el-menu>
         </el-aside>
-
         <el-container>
-            <el-header style="text-align: right; font-size: 12px" height="40px">
-                <!--<el-dropdown>-->
-                    <!--<i class="el-icon-setting" style="margin-right: 15px"></i>-->
-                    <!--<el-dropdown-menu slot="dropdown">-->
-                        <!--<el-dropdown-item>密码修改</el-dropdown-item>-->
-                        <!--<el-dropdown-item>个人信息修改</el-dropdown-item>-->
-                        <!--<el-dropdown-item>删除</el-dropdown-item>-->
-                    <!--</el-dropdown-menu>-->
-                <!--</el-dropdown>-->
+            <el-header style="text-align: right; font-size: 12px">
                <person-msg></person-msg>
             </el-header>
-
             <el-main>
-                <router-link to="/auth/login">login</router-link>
+                <router-view></router-view>
             </el-main>
         </el-container>
     </el-container>

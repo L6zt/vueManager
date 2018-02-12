@@ -41,7 +41,7 @@ export default {
                 rePassword: null
             },
             ruleForm: {
-				oldPassWord: [
+				oldPassword: [
                     {required: true, message: '原密码不能为空'}
                 ],
                 password: [

@@ -12,3 +12,8 @@
    clear: both
   }
 }
+@mixin main-container {
+  position: relative;
+  width: 1100px;
+  margin: 0 auto;
+}

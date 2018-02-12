@@ -2,7 +2,7 @@
     <section class="jc-person-msg-container">
         <el-dropdown>
             <span class="el-dropdown-link">
-                <img src="../assert/img/logo.png" class="jc-person-msg-img">
+                <img :src="img" class="jc-person-msg-img">
                 <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -26,7 +26,14 @@
     </section>
 </template>
 <script>
+import {mapState} from 'vuex'
+import defaultImg from  '../assert/img/logo.png'
 export default {
+	computed: {
+        ...mapState({
+            img: state =>(state.auth.user || {}).pic || defaultImg
+        })
+    },
 	methods: {
 		quit () {
             this.$store.dispatch('auth/quit')
@@ -43,6 +50,7 @@ export default {
 @import "../assert/css/index";
 .jc-person-msg-container {
     display: inline-block;
+    padding: 5px 0;
     .el-dropdown-link {
         @include clear-fix;
         cursor: pointer;
@@ -52,10 +60,15 @@ export default {
     }
     .jc-person-msg-img {
         display: inline-block;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border-radius: 100%;
         vertical-align: middle;
+        border: 1px solid $border-normal-color;
+        transition: all 300ms ease;
+        &:hover {
+            transform: rotate(180deg);
+        }
     }
     .user-link {
         text-decoration: none;

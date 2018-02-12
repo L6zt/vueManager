@@ -1,48 +1,69 @@
 <template>
     <div class="user-layout-container">
-        <aside class="user-left-menu">
-            <section class="user-person-msg">
-                <img src="../../assert/img/logo.png" alt="">
-                <span>{{(mx_userMsg || {}).name}}</span>
-            </section>
-            <section class="user-menu-item">
-                <i class="el-icon-edit"></i>
-                <router-link to="/user/fpwd" tag="span">
-                    修改密码
-                </router-link>
-            </section>
-            <section  class="user-menu-item">
-                <i class="el-icon-tickets"></i>
-                <router-link to="/user/editor" tag="span">
-                    修改个人信息
-                </router-link>
-            </section>
-        </aside>
-        <div class="user-layout-container-content">
-            <router-view></router-view>
-        </div>
+        <user-head></user-head>
+        <section class="user-common-content">
+            <aside class="user-left-menu">
+                <section class="user-person-msg">
+                    <img :src="src" alt="">
+                    <span>{{(mx_userMsg || {}).name}}</span>
+                </section>
+                <section class="user-menu-item">
+                    <i class="el-icon-edit"></i>
+                    <router-link
+                            to="/user/changePwd"
+                            tag="span"
+                            :class="{'is-active': $route.path === '/user/changePwd'}"
+                    >
+                        修改密码
+                    </router-link>
+                </section>
+                <section  class="user-menu-item">
+                    <i class="el-icon-tickets"></i>
+                    <router-link
+                            to="/user/modifyMsg"
+                            tag="span"
+                            :class="{'is-active': $route.path === '/user/modifyMsg'}"
+                    >
+                        修改个人信息
+                    </router-link>
+                </section>
+            </aside>
+            <div class="user-layout-container-content">
+                <router-view></router-view>
+            </div>
+        </section>
     </div>
 </template>
 <script>
+import {mapState} from 'vuex'
 import auth from '../../mixin/auth'
+import userHead from '../../components/user/userHeaed.vue'
+import defaultImg from '../../assert/img/logo.png'
 export default {
 	data () {
 		return {
         }
     },
+    computed: {
+        ...mapState({
+            src: state => (state.auth.user || {}).pic || defaultImg
+        })
+    },
     mixins: [auth],
     created () {
 		this.$mx_getLoginMsg()
-    }
+    },
+    components:{userHead}
 }
 </script>
 <style lang="scss">
 @import "../../assert/css/index";
 .user-layout-container {
-    position: relative;
-    width: 1100px;
-    margin: 30px auto;
-    @include clear-fix;
+    .user-common-content {
+        @include main-container;
+        margin:30px auto 0;
+        @include clear-fix;
+    }
     .user-left-menu {
         position: relative;
         float: left;
@@ -56,6 +77,7 @@ export default {
                 height: 100px;
                 border-radius: 100%;
                 margin: 0 auto;
+                box-shadow: 0 0 3px $box-shadow-dark-color;
             }
             text-align: center;
             font-size: $font-size-normal-title;
@@ -64,6 +86,13 @@ export default {
             position: relative;
             padding: 20px;
             text-align: left;
+            span {
+                cursor: pointer;
+                margin-left: 5px;
+                &.is-active{
+                   color: $nav-active-color;
+                }
+            }
         }
     }
     .user-layout-container-content {

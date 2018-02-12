@@ -1,10 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import loadBar from '../components/pageLoad.vue'
-let vmBar
+// import loadBar from '../components/pageLoad.vue'
+// let vmBar
 Vue.use(VueRouter)
 const routes = [
-	{path: '/', component: () => import('../views/index.vue')},
+	{path: '/', component: () => import('../views/index.vue'),
+	children: [
+		{path: '/', component: () => import('../views/defaultView.vue')},
+		{path:'mgUser', component: () => import('../views/mgUser/index.vue')}
+	]
+	},
 	{path: '/auth', component: () => import('../views/auth/layout.vue'),
 		children: [
 			{path: 'login', component: () => import('../views/auth/login.vue')}
