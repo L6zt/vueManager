@@ -32,7 +32,7 @@ export const post = ({url, params = {}}) => {
 			(data, headers) => {
 				let cs = ''
 				for (let k in data) {
-					cs = `${cs}${k}=${encodeURIComponent(data[k])}&`
+					data[k] && (cs = `${cs}${k}=${encodeURIComponent(data[k])}&`)
 				}
 				return cs
 			}

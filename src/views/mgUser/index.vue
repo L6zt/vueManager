@@ -1,58 +1,353 @@
 <template>
 <div class="mg-user-container">
-    <el-table
-        :data="userList"
+    <section>
+        <el-button
+                type="primary"
+                size="small"
+                @click="add"
+        >
+            <i class="el-icon-circle-plus-outline"></i>
+            新增
+        </el-button>
+    </section>
+    <el-row :gutter="10" class="select-box">
+        <el-col :span="6">
+            <el-input
+                    v-model="pagination.search"
+                    @enter.pevent="getUserMsg"
+                    type="search"
+                    placeholder="搜索用户名"
+                    clearable
+            >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-input>
+        </el-col>
+        <el-col :span="6" :offset="1" style="position: relative; height: 40px; display: block">
+            <el-select v-model="pagination.sortValue" placeholder="请选择角色">
+                <el-option
+                        v-for="item in sort"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                </el-option>
+            </el-select>
+        </el-col>
+        <el-col :span="2" :offset="1">
+            <el-button
+                    type="primary"
+                    @click.prevent="getUserMsg"
+            >搜索
+            </el-button>
+        </el-col>
+    </el-row>
+    <section class="mg-user-table-box">
+        <el-table
+                :data="userList"
+                :style="{width: `${50 + 180 + 200 + 180 + 100}px`}"
+        >
+            <el-table-column
+                    type="index"
+                    width="50"
+                    label="序号"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="pic"
+                    label="头像"
+                    width="100"
+            >
+                <template slot-scope="scope">
+                    <img :src="scope.row.pic" alt="" style="display: inline-block; height: 30px; width: 30px; border-radius: 100%">
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="用户名"
+                    width="180"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="role"
+                    label="角色"
+                    width="180"
+            >
+            </el-table-column>
+            <el-table-column
+                    lable="操作"
+                    width="200"
+            >
+                <template slot-scope="scope">
+                    <el-button
+                            @click.prevent="edit(scope.$index, userList)"
+                            type="success"
+                            size="small"
+                    >
+                        编辑
+                    </el-button>
+                    <el-button
+                            type="danger"
+                            size="small"
+                            @click.prevent="deleteVisible = true; deleteMsg = userList[scope.$index]"
+                    >
+                        删除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </section>
+    <section class="mg-user-pagination-box" v-show="pagination.total">
+        <el-pagination
+                layout="prev, pager, next"
+                :current-page.sync="pagination.currentPage"
+                :page-size="pagination.pageSize"
+                :total="pagination.total"
+                prev-text="上一页"
+                next-text="下一页"
+                background
+        >
+        </el-pagination>
+    </section>
+    <el-dialog
+            title="新增用户"
+            :visible.sync="dialogVisible"
     >
-        <el-table-column
-                type="index"
-                width="50"
-                label="序号"
+        <el-form
+                :model="insertForm"
+                label-width="100px"
+                :rules="rules"
+                ref="form"
         >
-        </el-table-column>
-        <el-table-column
-                prop="name"
-                label="用户名"
-                width="180"
-        >
-        </el-table-column>
-        <el-table-column
-                prop="role"
-                label="角色"
-                width="180"
-        >
-        </el-table-column>
-        <el-table-column
-                lable="操作"
-                width="200"
-        >
-          <template slot-scope="scope">
-              <el-button
-                      @click.prevent="edit(scope.$index, userList)"
-              >
-                  编辑
-              </el-button>
-          </template>
-        </el-table-column>
-    </el-table>
+            <el-form-item prop="name" label="用户名:">
+                <el-input type="text" v-model="insertForm.name"></el-input>
+            </el-form-item>
+            <el-form-item prop="role" label="角色:">
+                <el-select v-model="insertForm.role" placeholder="请选择角色">
+                    <el-option
+                            v-for="item in sort"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                    >
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item prop="password" label="密码:">
+                <el-input type="password" v-model="insertForm.password"></el-input>
+            </el-form-item>
+            <el-form-item prop="rePassword" label="确认密码:">
+                <el-input type="password" v-model="insertForm.rePassword"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button
+                        type="primary"
+                        :loading="btnStatus.loading"
+                        @click="save"
+                >
+                    {{btnStatus.text}}
+                </el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+    <el-dialog
+            :title="`删除用户名为${(deleteMsg || {}).name}用户吗？`"
+            :visible.sync="deleteVisible"
+    >
+        <el-button type="info" size="small" @click="deleteVisible = false">取消</el-button>
+        <el-button type="danger" size="small" @click="del">确定</el-button>
+    </el-dialog>
 </div>
 </template>
 <script>
+import {mapState} from  'vuex'
+import defaultImg from '../../assert/img/logo.png'
+const btnStatus = [
+    {text: '确定', loading: false},
+    {text: '提交中', loading: true}
+]
 export default {
 	data () {
+		const that = this
 		return {
-			userList: [
-                {name: 1, role: 1},
-				{name: 12, role: 12},
-				{name: 13, role: 13}
-			]
+			dialogVisible: false,
+			deleteVisible:  false,
+            deleteMsg: null,
+            btnStatus: btnStatus[0],
+            sort:  [
+                {value: 2, label: '经理'},
+                {value: 3, label: '维修人员'}
+            ],
+            pagination: {
+	            currentPage: 1,
+                pageSize: 5,
+                total: null,
+                search: null,
+	            sortValue: null
+            },
+            insertForm: {
+				name: null,
+                nick_name: null,
+                password: null,
+                rePassword: null,
+                role: null
+            },
+            rules: {
+				name: [
+                    {required: true, message: '不能为空'},
+                    {required: true, pattern: /\w{4,8}$/, message: '用户名, 合法字符位英文和数字， 位数 4-8位'}
+                ],
+                role: [
+                    {required: true, message: '不能为空', type: 'number'},
+                ],
+	            password: [
+		            {required: true,
+			            validator: (rule, value, cb) => {
+				            const tip =  '密码为数字和英文组合， 位数不小于 8'
+				            let [initLg, aZLg, numLg] = [0, 0, 0]
+				            value = value || ''
+				            initLg = value.length
+				            let str = value.replace(/[a-zA-Z]/g, '')
+				            aZLg = str.length
+				            str = value.replace(/[0-9]/g, '')
+				            numLg = str.length
+				            if (!str && initLg >= 8) {
+					            cb(new Error(tip))
+					            return
+				            }
+				            if (aZLg + numLg === initLg && aZLg > 0 && numLg > 0) {
+					            cb()
+				            } else {
+					            cb(new Error(tip))
+				            }
+			            }
+		            },
+	            ],
+	            rePassword: [
+		            {required: true, message: '两次密码不下一样',
+			            validator: (rule, value, cb) => {
+				            if (that.insertForm.password === value) {
+					            cb()
+				            } else {
+					            cb(new Error('两次密码不一样'))
+				            }
+			            }
+		            }
+	            ]
+            }
         }
     },
+    watch: {
+		'pagination': {
+			handler () {
+				this.getUserMsg()
+            },
+            deep: true
+        }
+    },
+    computed: {
+        ...mapState({
+            userList: (state) => {
+            	return (state.mgUser.userList || []).map(item => {
+            		item.role = item.role  === 2 ? '经理' : '维修人员'
+                    item.pic = item.pic ? item.pic : defaultImg
+            		return item
+                })
+            }
+        })
+    },
     methods: {
+		initInserForm () {
+			const {insertForm} = this
+            Object.assign(insertForm).forEach(key => {
+            	insertForm[key] = null
+            })
+        },
 		edit (index, userList) {
 			console.log(index)
+        },
+        select (role) {
+			this.sort = sort[role - 1]
+        },
+        save () {
+            const {form} = this.$refs
+            const {name, role, password} = this.insertForm
+            form.validate().then(flag => {
+            	this.btnStatus = btnStatus[1]
+            	this.$store.dispatch('mgUser/createUser', {
+            		name, role, password
+                }).then(({errMsg}) => {
+            		if (errMsg) {
+            			this.$notify({
+                            type: 'warning',
+                            message: errMsg
+                        })
+            			throw (new Error(errMsg))
+                    }
+		            return this.getUserMsg()
+                }).then(() => {
+		            this.dialogVisible = false
+		            this.btnStatus =  btnStatus[0]
+                    this.initInserForm()
+                }).catch(e => {
+                	this.dialogVisible = false
+                	this.btnStatus = btnStatus[0]
+		            this.initInserForm()
+	            })
+            })
+        },
+        add () {
+			this.dialogVisible = true
+        },
+	    del () {
+            this.$store.dispatch('mgUser/delUser', {
+            	name: this.deleteMsg.name
+            }).then(({data, flag, errMsg}) => {
+				if (errMsg) {
+					throw (errMsg)
+                }
+                this.deleteVisible = false
+            }).then(data => {
+            	return this.getUserMsg()
+            }).catch(e => {
+            	this.$notify({
+                    type: 'warning',
+                    message: e
+                })
+            })
+        },
+        getUserMsg () {
+			const {pagination: {currentPage, pageSize, search, sortValue}} = this
+            this.$store.dispatch('mgUser/getUserList', {
+            	    pageIndex: currentPage,
+                    pageSize,
+                    name: search,
+                    sort: sortValue
+                })
+                .then(({flag, data, errMsg}) => {
+				    if (flag === 1) {
+				    	console.log(data)
+				    	this.pagination.total = data.count
+                    }
+                }).catch(e => {
+            })
         }
+    },
+    mounted() {
+		this.getUserMsg()
     }
 }
 </script>
-<style>
+<style lang="scss">
+    .mg-user-container {
+        .mg-user-table-box {
+            padding-top: 10px;
+        }
+        .mg-user-pagination-box {
+            position: relative;
+            margin-top: 10px;
+        }
+        .select-box {
+            margin-top: 10px;
+        }
+    }
 </style>
