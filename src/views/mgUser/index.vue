@@ -10,7 +10,10 @@
             新增
         </el-button>
     </section>
-    <el-row :gutter="10" class="select-box">
+    <el-row
+            :gutter="10"
+            class="select-box"
+    >
         <el-col :span="6">
             <el-input
                     v-model="pagination.search"
@@ -72,6 +75,9 @@
                     label="角色"
                     width="180"
             >
+                <template slot-scope="scope">
+                    {{ scope.row.role  === 2 ? '经理' : '维修人员'}}
+                </template>
             </el-table-column>
             <el-table-column
                     lable="操作"
@@ -82,6 +88,7 @@
                             @click.prevent="edit(scope.$index, userList)"
                             type="success"
                             size="small"
+                            @click="edit(scope.$index, userList)"
                     >
                         编辑
                     </el-button>
@@ -111,8 +118,10 @@
     <el-dialog
             title="新增用户"
             :visible.sync="dialogVisible"
+            @close="initInsertForm"
     >
         <el-form
+                v-if="dialogVisible"
                 :model="insertForm"
                 label-width="100px"
                 :rules="rules"
@@ -161,21 +170,25 @@
 <script>
 import {mapState} from  'vuex'
 import defaultImg from '../../assert/img/logo.png'
+import auth from  '../../mixin/auth'
 const btnStatus = [
     {text: '确定', loading: false},
     {text: '提交中', loading: true}
 ]
+const sort = [
+		{value: 2, label: '经理'},
+		{value: 3, label: '维修人员'}
+	]
 export default {
 	data () {
 		const that = this
 		return {
+			isEditor: false,
 			dialogVisible: false,
 			deleteVisible:  false,
             deleteMsg: null,
             btnStatus: btnStatus[0],
-            sort:  [
-                {value: 2, label: '经理'},
-                {value: 3, label: '维修人员'}
+            sort:[
             ],
             pagination: {
 	            currentPage: 1,
@@ -236,19 +249,40 @@ export default {
             }
         }
     },
+    mixins: [auth],
     watch: {
 		'pagination': {
 			handler () {
 				this.getUserMsg()
             },
             deep: true
+        },
+        'mx_userMsg': {
+			handler(v) {
+				const role = (v || {}).role
+                switch (role) {
+                    case 1: {
+                    	this.sort = sort
+                    	break;
+                    }
+                    case 2: {
+                    	this.sort = [sort[1]]
+                        break;
+                    }
+                    default: {
+                    	this.sort = []
+                    }
+                }
+            },
+            deep: true,
+	        immediate: true
         }
     },
     computed: {
         ...mapState({
             userList: (state) => {
             	return (state.mgUser.userList || []).map(item => {
-            		item.role = item.role  === 2 ? '经理' : '维修人员'
+            		//item.role = item.role  === 2 ? '经理' : '维修人员'
                     item.pic = item.pic ? item.pic : defaultImg
             		return item
                 })
@@ -256,14 +290,20 @@ export default {
         })
     },
     methods: {
-		initInserForm () {
+		initInsertForm () {
 			const {insertForm} = this
-            Object.assign(insertForm).forEach(key => {
+            Object.keys(insertForm).forEach(key => {
             	insertForm[key] = null
             })
         },
 		edit (index, userList) {
-			console.log(index)
+			const {insertForm} = this
+			this.dialogVisible = true
+            this.isEditor = true
+			for(let k in insertForm) {
+				insertForm[k]  = userList[index][k]
+            }
+            insertForm['index'] = index
         },
         select (role) {
 			this.sort = sort[role - 1]
@@ -271,32 +311,58 @@ export default {
         save () {
             const {form} = this.$refs
             const {name, role, password} = this.insertForm
-            form.validate().then(flag => {
-            	this.btnStatus = btnStatus[1]
-            	this.$store.dispatch('mgUser/createUser', {
-            		name, role, password
-                }).then(({errMsg}) => {
-            		if (errMsg) {
-            			this.$notify({
-                            type: 'warning',
-                            message: errMsg
-                        })
-            			throw (new Error(errMsg))
-                    }
-		            return this.getUserMsg()
-                }).then(() => {
-		            this.dialogVisible = false
-		            this.btnStatus =  btnStatus[0]
-                    this.initInserForm()
-                }).catch(e => {
-                	this.dialogVisible = false
-                	this.btnStatus = btnStatus[0]
-		            this.initInserForm()
+            if (!this.isEditor) {
+	            form.validate().then(flag => {
+		            this.btnStatus = btnStatus[1]
+		            this.$store.dispatch('mgUser/createUser', {
+			            name, role, password
+		            }).then(({errMsg}) => {
+			            if (errMsg) {
+				            this.$notify({
+					            type: 'warning',
+					            message: errMsg
+				            })
+				            throw (new Error(errMsg))
+			            }
+			            return this.getUserMsg()
+		            }).then(() => {
+			            this.dialogVisible = false
+			            this.btnStatus =  btnStatus[0]
+			            this.initInsertForm()
+		            }).catch(e => {
+			            this.dialogVisible = false
+			            this.btnStatus = btnStatus[0]
+			            this.initInsertForm()
+		            })
 	            })
-            })
+            } else {
+            	form.validate().then(flag => {
+            		this.btnStatus = btnStatus[1]
+                    this.$store.dispatch('mgUser/editUser',{
+                    	params: {...this.insertForm},
+                        index: this.insertForm.index,
+                        item: {...this.insertForm}
+                    }).then(({errMsg}) => {
+            			if (errMsg) {
+				            this.$notify({
+					            type: 'warning',
+					            message: errMsg
+				            })
+                        }
+	                    this.dialogVisible = false
+	                    this.btnStatus =  btnStatus[0]
+	                    this.initInsertForm()
+                    }).catch(e => {
+	                    this.dialogVisible = false
+	                    this.btnStatus =  btnStatus[0]
+	                    this.initInsertForm()
+                    })
+                })
+            }
         },
         add () {
 			this.dialogVisible = true
+            this.isEditor = false
         },
 	    del () {
             this.$store.dispatch('mgUser/delUser', {
@@ -331,6 +397,9 @@ export default {
                 }).catch(e => {
             })
         }
+    },
+    created () {
+		this.$mx_getLoginMsg()
     },
     mounted() {
 		this.getUserMsg()

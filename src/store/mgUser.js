@@ -7,6 +7,9 @@ export default {
 	mutations: {
 		setUserList (state, playLoad) {
 			state.userList = playLoad
+		},
+		editUser (state, {index, item}) {
+			state.userList.splice(index, 1, item)
 		}
 	},
 	actions: {
@@ -32,6 +35,19 @@ export default {
 			return post({
 				url: `${baseUrl}/user/delete`,
 				params: playLoad
+			})
+		},
+		editUser ({commit, state}, playLoad) {
+			const {params, index, item} = playLoad
+			return post({
+				url: `${baseUrl}/user/editor`,
+				params,
+			}).then(({flag, data, errMsg}) => {
+					commit('editUser', {
+						index,
+						item
+					})
+				return {data, flag, errMsg}
 			})
 		}
 	}
