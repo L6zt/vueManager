@@ -1,7 +1,18 @@
 <template>
     <div class="mgEvent-page-container">
+        <section>
+            <el-button
+                    type="primary"
+                    size="small"
+                    @click="add"
+            >
+                <i class="el-icon-circle-plus-outline"></i>
+                新增
+            </el-button>
+        </section>
       <el-table
            :data="eventList"
+           size="small"
       >
           <el-table-column
                   type="index"
@@ -67,6 +78,59 @@
             >
             </el-pagination>
         </section>
+        <el-dialog
+                :visible.sync="isShow"
+                v-model="form"
+        >
+            <el-form
+                    class="mg-event-form-container"
+                    :rules="rules"
+                    :model="form"
+                    ref="form"
+            >
+                <el-form-item
+                        prop="title"
+                        label="标题："
+                >
+                    <el-input
+                            v-model="form.title"
+                            placeholder="请输入标题"
+                    >
+
+                    </el-input>
+                </el-form-item>
+                <el-form-item
+                        prop="content"
+                        label="简介："
+                >
+                    <el-input v-model="form.content"
+                              type="textarea"
+                              :rows="2"
+                              placeholder="请输入简介"
+                    >
+                    </el-input>
+                </el-form-item>
+                <el-form-item
+                        prop="solveid"
+                        label="维修人"
+                >
+                    <el-select v-model="form.solveid">
+                        <el-option
+                                v-for="item in solveUser"
+                                :key="item.uuid"
+                                :label="item.name"
+                                :value="item.uuid"
+                        >
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" style="display: block; margin:  0 auto" @click="save">
+                        确定
+                    </el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -75,21 +139,51 @@
 	export default {
 		data () {
 			return {
+				rules: {
+					title: [
+                        {required: true, message: '标题不能为空'},
+                        {required: true,
+	                        validator: (rule, value, cb) => {
+                        	    const lg = value.length
+                                if (lg < 25) {
+                        	    	return cb()
+                                }
+                                cb(new Error('标题不能超过25字符'))
+	                        }}
+                    ],
+                    content: [
+                        {required: true, message: '简介不能为空'},
+	                    {required: true,
+		                    validator: (rule, value, cb) => {
+			                    const lg = value.length
+			                    if (lg < 100) {
+				                    return cb()
+			                    }
+			                    cb(new Error('标题不能超过100字符'))
+		                    }}
+                    ],
+                    solveid: [
+                        {required: true, message: '维修人不能为空'}
+                    ]
+                },
+				form: {
+					title: null,
+                    content: null,
+					solveid: null
+                },
+                isShow: true,
 				pagination: {
 					total: 0,
                     currentPage: 1,
                     pageSize: 5
                 },
+                solveUser: [],
 				eventList: [],
                 pUser: {},
                 sUser: {}
             }
 		},
 		mixins: [auth, pageLoad],
-		mounted () {
-			this.$store.commit('changeLoadStatus', false)
-            this.getEventList()
-		},
         watch: {
 			'pagination': {
 				handler () {
@@ -98,9 +192,39 @@
                 deep: true
             }
         },
+        created () {
+			this.$store.dispatch('event/getSolveUserList')
+                .then(({flag, data, errMsg}) => {
+				    if (flag === 1) {
+				    	this.solveUser = data.rows
+                    }
+                })
+        },
+		mounted () {
+			this.$store.commit('changeLoadStatus', false)
+			this.getEventList()
+		},
         methods: {
 			watch (index) {
 				console.log(index)
+            },
+            add () {
+                this.isShow = true
+            },
+            save () {
+				this.$refs['form'].validate().then(flag => {
+					if (flag) {
+                        this.$store.dispatch('event/createEvent', this.form)
+                            .then(({data, flag, errMsg}) => {
+                        	    if (flag === 1) {
+		                            this.getEventList()
+                                        .then(() => {
+	                                        this.isShow = false
+                                        })
+	                            }
+                            })
+                    }
+                })
             },
             edit(index) {
 				console.log(index)
@@ -110,7 +234,7 @@
             },
             getEventList () {
 				const {pagination: {currentPage, pageSize}} = this
-	            this.$store.dispatch('event/getMgEventList', {
+	             return this.$store.dispatch('event/getMgEventList', {
 		            pageIndex: currentPage,
 		            pageSize: pageSize
 	            }).then(({data, flag, errMsg}) => {
@@ -145,6 +269,11 @@
     .mgEvent-page-container {
         .mgEvent--pagination-box {
             margin-top: 10px;
+        }
+        .mg-event-form-container {
+            position: relative;
+            width: 50%;
+            margin: 0 auto;
         }
     }
 </style>
