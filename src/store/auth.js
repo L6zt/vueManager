@@ -1,4 +1,4 @@
-import {normalGet, post, upload, baseUrl, $2data} from "../utils/ajax";
+import {normalGet, post, upload, baseUrl, $2data} from "../utils/ajax"
 export default {
 	namespaced: true,
 	state: {

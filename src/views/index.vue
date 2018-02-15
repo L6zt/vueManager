@@ -1,16 +1,15 @@
 <template>
     <el-container>
         <el-aside  width="200px">
-            <el-menu :default-openeds="['1']" class="slide-menu-left">
-                <el-submenu index="1">
+            <el-menu :default-openeds="['1', '2']" class="slide-menu-left" :router="true">
+                <el-submenu index="1" v-if="(mx_userMsg || {}).role !== 3">
                     <template slot="title"><i class="el-icon-message"></i>用户管理</template>
-                    <el-menu-item index="user-list">管理用户</el-menu-item>
+                    <el-menu-item index="/mgUser" >用户列表</el-menu-item>
                 </el-submenu>
                 <el-submenu index="2">
-                    <template slot="title"><i class="el-icon-menu"></i>事件</template>
-                    <el-menu-item index="event-list">事件列表</el-menu-item>
-                    <el-menu-item index="event-mg-list">管理人事件</el-menu-item>
-                    <el-menu-item index="event-solve-list">维修人事件</el-menu-item>
+                    <template slot="title"><i class="el-icon-menu"></i>事件管理</template>
+                    <el-menu-item index="/mgEvent">我的事件</el-menu-item>
+                    <el-menu-item index="/solveEvent">我的事件</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-aside>
@@ -32,14 +31,14 @@ export default {
 	data () {
 		return {}
     },
-	mixins: [pageLoad, auth],
+	mixins: [auth],
     created () {
         this.$mx_getLoginMsg()
     },
 	mounted () {
-		setTimeout(() => {
-			this.$store.commit('changeLoadStatus', false)
-		}, 1000)
+//		setTimeout(() => {
+//			this.$store.commit('changeLoadStatus', false)
+//		}, 1000)
 	},
     components: {personMsg}
 }

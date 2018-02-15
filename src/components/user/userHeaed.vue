@@ -25,9 +25,11 @@
             text-align: center;
         }
         .user-go-home {
+            position: relative;
             float: left;
             margin-left: 10px;
             cursor: pointer;
+            z-index: 2;
         }
     }
 </style>

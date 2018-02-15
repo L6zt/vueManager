@@ -7,13 +7,13 @@
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                    <router-link to="/user/modifyMsg" class="user-link" tag="span">
-                        个人信息
+                    <router-link to="/user/changePwd" class="user-link" tag="span">
+                        密码修改
                     </router-link>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                    <router-link to="/user/changePwd" class="user-link" tag="span">
-                        密码修改
+                    <router-link to="/user/modifyMsg" class="user-link" tag="span">
+                        个人信息
                     </router-link>
                 </el-dropdown-item>
                 <el-dropdown-item>
@@ -39,6 +39,7 @@ export default {
             this.$store.dispatch('auth/quit')
                 .then(({flag, data, errMsg}) => {
             	    if (flag === 1) {
+            	    	this.$store.commit('clearAllState')
             	    	this.$router.push('auth/login')
                     }
                 })

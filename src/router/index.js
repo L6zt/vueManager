@@ -7,7 +7,10 @@ const routes = [
 	{path: '/', component: () => import('../views/index.vue'),
 	children: [
 		{path: '/', component: () => import('../views/defaultView.vue')},
-		{path:'mgUser', component: () => import('../views/mgUser/index.vue')}
+		{path: 'mgUser', component: () => import('../views/mgUser/index.vue')},
+		{path: 'event', component: () => import('../views/event/index.vue') },
+		{path: 'mgEvent', component: () => import('../views/event/mgEvent.vue')},
+		{path: 'solveEvent', component: () => import('../views/event/solveEvent.vue')},
 	]
 	},
 	{path: '/auth', component: () => import('../views/auth/layout.vue'),

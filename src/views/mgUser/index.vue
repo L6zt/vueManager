@@ -134,6 +134,7 @@
                 <el-select v-model="insertForm.role" placeholder="请选择角色">
                     <el-option
                             v-for="item in sort"
+                            v-if="item.value !== null"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value"
@@ -171,14 +172,16 @@
 import {mapState} from  'vuex'
 import defaultImg from '../../assert/img/logo.png'
 import auth from  '../../mixin/auth'
+import pageLoad from '../../mixin/pageLoad'
 const btnStatus = [
     {text: '确定', loading: false},
     {text: '提交中', loading: true}
 ]
 const sort = [
-		{value: 2, label: '经理'},
-		{value: 3, label: '维修人员'}
-	]
+    [{value: null, label: '全部'}, {value: 2, label: '经理'}, {value: 3, label: '维修人员'}],
+	[{value: 3, label: '维修人员'}],
+    []
+]
 export default {
 	data () {
 		const that = this
@@ -249,7 +252,7 @@ export default {
             }
         }
     },
-    mixins: [auth],
+    mixins: [auth, pageLoad],
     watch: {
 		'pagination': {
 			handler () {
@@ -262,12 +265,16 @@ export default {
 				const role = (v || {}).role
                 switch (role) {
                     case 1: {
-                    	this.sort = sort
+                    	this.sort = sort[0]
                     	break;
                     }
                     case 2: {
-                    	this.sort = [sort[1]]
+                    	this.sort = sort[1]
                         break;
+                    }
+                    case 3: {
+                    	this.$router.push('/')
+                    	break;
                     }
                     default: {
                     	this.sort = []
@@ -391,7 +398,6 @@ export default {
                 })
                 .then(({flag, data, errMsg}) => {
 				    if (flag === 1) {
-				    	console.log(data)
 				    	this.pagination.total = data.count
                     }
                 }).catch(e => {
@@ -403,6 +409,9 @@ export default {
     },
     mounted() {
 		this.getUserMsg()
+	    setTimeout(() => {
+		    this.$store.commit('changeLoadStatus', false)
+	    }, 1000)
     }
 }
 </script>

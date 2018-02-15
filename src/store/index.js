@@ -2,11 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './auth'
 import mgUser from './mgUser'
+import event from './event'
 Vue.use(Vuex)
 const store = new Vuex.Store({
 	modules: {
 		auth,
-		mgUser
+		mgUser,
+		event
 	},
 	state: {
 		pageLoad: false
@@ -14,6 +16,10 @@ const store = new Vuex.Store({
 	mutations: {
 		changeLoadStatus (state, flag) {
 			this.state.pageLoad = flag
+		},
+		clearAllState (state, flag) {
+			state.auth.user = null
+			state.mgUser.userList =[]
 		}
 	},
 	actions: {
