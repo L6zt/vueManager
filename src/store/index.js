@@ -19,6 +19,7 @@ const store = new Vuex.Store({
 		},
 		clearAllState (state, flag) {
 			state.auth.user = null
+			state.event.eventList  =  {}
 			state.mgUser.userList =[]
 		}
 	},

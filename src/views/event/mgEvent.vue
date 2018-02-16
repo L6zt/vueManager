@@ -34,7 +34,7 @@
                   label="管理人"
           >
               <template  slot-scope="scope">
-                  {{scope.row.postid ? pUser[scope.row.postid]['name'] : '暂无'}}
+                  {{scope.row.postid ? (pUser[scope.row.postid]||{})['name'] : '暂无'}}
               </template>
           </el-table-column>
           <el-table-column
@@ -42,7 +42,7 @@
                   label="维修人员"
           >
               <template  slot-scope="scope">
-                  {{scope.row.solveid ? sUser[scope.row.solveid]['name'] : '暂无'}}
+                  {{scope.row.solveid ? (sUser[scope.row.solveid] || {})['name'] : '暂无'}}
               </template>
           </el-table-column>
           <el-table-column
@@ -134,7 +134,7 @@
     </div>
 </template>
 <script>
-	import auth from '../../mixin/pageLoad'
+	import auth from '../../mixin/auth'
 	import pageLoad from '../../mixin/pageLoad'
 	export default {
 		data () {
@@ -171,7 +171,7 @@
                     content: null,
 					solveid: null
                 },
-                isShow: true,
+                isShow: false,
 				pagination: {
 					total: 0,
                     currentPage: 1,
@@ -190,7 +190,14 @@
 					this. getEventList()
                 },
                 deep: true
-            }
+            },
+	        'mx_userMsg': {
+		        handler(v) {
+			        v && this.getEventList()
+		        },
+		        deep: true,
+		        immediate: true
+	        }
         },
         created () {
 			this.$store.dispatch('event/getSolveUserList')
@@ -202,7 +209,9 @@
         },
 		mounted () {
 			this.$store.commit('changeLoadStatus', false)
-			this.getEventList()
+            setTimeout(() => {
+				console.log(this.mx_userMsg)
+            }, 3000)
 		},
         methods: {
 			watch (index) {
@@ -233,33 +242,41 @@
 				console.log(index)
             },
             getEventList () {
-				const {pagination: {currentPage, pageSize}} = this
+				const {pagination: {currentPage, pageSize}, mx_userMsg} = this
 	             return this.$store.dispatch('event/getMgEventList', {
 		            pageIndex: currentPage,
-		            pageSize: pageSize
+		            pageSize: pageSize,
+                    postid: mx_userMsg.uuid
 	            }).then(({data, flag, errMsg}) => {
-		            const {eventList:{count, rows}, pUser,sUser} = data
-		            const [listA, listB] = [{}, {}]
-		            Object.assign(this, {
-			            eventList: rows.map(item => {
-			            	const time = item['create_time']
-                            const date = new Date(time)
-                            let str = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}`
-			            	item['create_time'] = str
-                            return item
-                        })
-		            })
-		            this.pagination.total = count
-		            pUser.forEach(item => {
-			            const k = item.uuid
-			            k && (listA[k] = item)
-		            })
-		            sUser.forEach(item => {
-			            const k = item.uuid
-			            k && (listB[k] = item)
-		            })
-		            this.sUser = {...this.sUser,...listB}
-		            this.pUser = {...this.pUser, ...listA}
+					if (flag === 1) {
+						const {eventList:{count, rows}, pUser,sUser} = data
+						const [listA, listB] = [{}, {}]
+						Object.assign(this, {
+							eventList: rows.map(item => {
+								const time = item['create_time']
+								const date = new Date(time)
+								let str = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}`
+								item['create_time'] = str
+								return item
+							})
+						})
+						this.pagination.total = count
+						pUser.forEach(item => {
+							const k = item.uuid
+							k && (listA[k] = item)
+						})
+						sUser.forEach(item => {
+							const k = item.uuid
+							k && (listB[k] = item)
+						})
+						this.sUser = {...this.sUser,...listB}
+						this.pUser = {...this.pUser, ...listA}
+						return
+                    }
+                    this.$notify({
+                        type: 'warning',
+                        message: errMsg
+                    })
 	            })
             }
         }
