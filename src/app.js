@@ -2,6 +2,8 @@ import Vue from 'vue'
 import layout from './views/layout.vue'
 import store from './store'
 import Element from 'element-ui'
+import './assert/css/main.scss'
+import 'element-ui/lib/theme-chalk/index.css'
 import router from './router/index'
 import {pulginsFn} from './pulgins/index.js'
 pulginsFn(Vue)

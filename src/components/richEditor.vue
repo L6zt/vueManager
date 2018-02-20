@@ -11,15 +11,28 @@ export default {
 			type: String,
         }
     },
+    data () {
+		return {
+			isMounted: false
+        }
+    },
     watch: {
 		value: {
 			handler(v){
 				const editor = this.$options.editor
                 if (editor) {
-	                editor && editor.txt.html(v)
+					if (!this.isMounted) {
+						if (v) {
+							editor.txt.html(v)
+							this.isMounted = true
+						}
+					}
                 } else {
 	                this.$on('hook:mounted', () => {
-		                this.$options.editor.txt.html(v)
+	                	if (!this.isMounted && v) {
+			                this.$options.editor.txt.html(v)
+			                this.isMounted = true
+		                }
 	                })
                 }
 			},
@@ -30,7 +43,6 @@ export default {
 		const editor = new wangEditor(this.$refs['editor'])
         this.$options.editor = editor
 	    editor.customConfig.onchange = (html) => {
-			console.log('input')
             this.$emit('input', html)
         }
 	    editor.create()

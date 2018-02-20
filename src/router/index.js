@@ -11,6 +11,7 @@ const routes = [
 		{path: 'event', component: () => import('../views/event/index.vue') },
 		{path: 'mgEvent', component: () => import('../views/event/mgEvent.vue')},
 		{path: 'solveEvent', component: () => import('../views/event/solveEvent.vue')},
+		{path: 'event/detail/:id', component: () => import('../views/event/eventDetail.vue')}
 	]
 	},
 	{path: '/auth', component: () => import('../views/auth/layout.vue'),

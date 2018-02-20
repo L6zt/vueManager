@@ -17,6 +17,7 @@ module.exports = {
 			{
 				test: /\.vue$/,
 				loader: 'vue-loader',
+				exclude: /node_modules/,
 				options: {
 					loaders: {
 						scss: 'vue-style-loader!css-loader!postcss-loader!sass-loader'
@@ -27,8 +28,8 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.js/,
 				exclude: /node_modules/,
+				test: /\.js/,
 				use: 'babel-loader'
 			},
 			{

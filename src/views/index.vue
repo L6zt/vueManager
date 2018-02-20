@@ -8,8 +8,8 @@
                 </el-submenu>
                 <el-submenu index="2">
                     <template slot="title"><i class="el-icon-menu"></i>事件管理</template>
-                    <el-menu-item index="/mgEvent">我的事件</el-menu-item>
-                    <el-menu-item index="/solveEvent">我的事件</el-menu-item>
+                    <el-menu-item index="/mgEvent" v-if="(mx_userMsg || {}) .role < 3">我的事件</el-menu-item>
+                    <el-menu-item index="/solveEvent" v-else>我的事件</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-aside>
@@ -44,15 +44,6 @@ export default {
 }
 </script>
 <style lang="scss">
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    html, body {
-        width: 100%;
-        height: 100%;
-    }
     .slide-menu-left {
         position: fixed;
         width: 200px;

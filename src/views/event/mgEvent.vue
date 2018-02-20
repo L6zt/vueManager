@@ -1,5 +1,5 @@
 <template>
-    <div class="mgEvent-page-container">
+    <div class="mgEvent-page-container" v-if="((mx_userMsg || {}).role || 5) <  3">
         <section>
             <el-button
                     type="primary"
@@ -193,7 +193,13 @@
             },
 	        'mx_userMsg': {
 		        handler(v) {
-			        v && this.getEventList()
+		        	if (v) {
+		        		if (v.role >  2) {
+		        			this.$router.push('/')
+                            return
+                        }
+				        this.getEventList()
+                    }
 		        },
 		        deep: true,
 		        immediate: true
@@ -209,13 +215,10 @@
         },
 		mounted () {
 			this.$store.commit('changeLoadStatus', false)
-            setTimeout(() => {
-				console.log(this.mx_userMsg)
-            }, 3000)
 		},
         methods: {
 			watch (index) {
-				console.log(index)
+				this.$router.push(`/event/detail/${this.eventList[index].uuid}`)
             },
             add () {
                 this.isShow = true

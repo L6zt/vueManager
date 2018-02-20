@@ -8,7 +8,6 @@
 </template>
 <script>
     import pageLoad from '../components/pageLoad.vue'
-    import 'element-ui/lib/theme-chalk/index.css'
     import {mapState} from 'vuex'
     export default {
         computed: {

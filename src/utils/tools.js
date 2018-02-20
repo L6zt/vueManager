@@ -29,5 +29,27 @@
 		return {requestAnimationFrame, cancelAnimationFrame}
 	}
 	const amObj = animation()
+    const toString =  (context) => {
+		return Object.prototype.toString.call(context)
+    }
+    const deepClone = (target) => {
+		let result = Object.create({})
+		if (typeof target === 'number' || typeof target === 'boolean' || typeof target === 'string') {
+			return target
+		}
+		if (toString(target) === '[object Object]') {
+			for (let k in target) {
+				result[k] = deepClone(target[k])
+			}
+			return result
+		}
+		if (toString(target) === '[object Array]') {
+			result = target.map(item => {
+				return deepClone(item)
+			})
+			return result
+		}
+		return target
+    }
 	export const requestAnimationFrame = amObj.requestAnimationFrame
     export const cancelAnimationFrame = amObj.cancelAnimationFrame
