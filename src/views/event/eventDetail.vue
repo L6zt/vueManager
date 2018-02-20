@@ -5,7 +5,7 @@
                 :key="index"
                 :personMsg="userList[item.user_id]"
         >
-            <p v-html="item.comment"></p>
+            <div v-html="item.comment" class="get-comment-content w-e-text"></div>
         </event-comment>
         <el-form ref="form"
                  :model="form"
@@ -103,5 +103,15 @@ export default {
 @import "../../assert/css/index";
 .event-detail-container {
     @include main-container;
+    /*.get-comment-content {*/
+        /*font-size: 16px;*/
+        /** {*/
+            /*line-height: 1.5;*/
+            /*margin: 10px 0;*/
+        /*}*/
+    /*}*/
+    .w-e-text {
+        overflow: auto;
+    }
 }
 </style>
