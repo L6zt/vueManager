@@ -1,120 +1,124 @@
 <template>
 <div class="mg-user-container">
-    <section>
-        <el-button
-                type="primary"
-                size="small"
-                @click="add"
-        >
-            <i class="el-icon-circle-plus-outline"></i>
-            新增
-        </el-button>
-    </section>
-    <el-row
-            :gutter="10"
-            class="select-box"
-    >
-        <el-col :span="6">
-            <el-input
-                    v-model="pagination.search"
-                    @enter.pevent="getUserMsg"
-                    type="search"
-                    placeholder="搜索用户名"
-                    clearable
+    <el-row class="mg-user-table-box">
+        <el-col :xs="{span: 24}"  :md="{span: 18}" :lg="{span: 12}" >
+            <el-row>
+                <el-col>
+                    <el-button
+                            type="primary"
+                            size="small"
+                            @click="add"
+                    >
+                        <i class="el-icon-circle-plus-outline"></i>
+                        新增
+                    </el-button>
+                </el-col>
+            </el-row>
+            <el-row
+                    :gutter="10"
+                    class="mg-user-filter-box"
             >
-                <i slot="prefix" class="el-input__icon el-icon-search"></i>
-            </el-input>
+                <el-col :span="6">
+                    <el-input
+                            v-model="pagination.search"
+                            @enter.pevent="getUserMsg"
+                            type="search"
+                            placeholder="搜索用户名"
+                            clearable
+                    >
+                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    </el-input>
+                </el-col>
+                <el-col :span="6" :offset="1" style="position: relative; height: 40px; display: block">
+                    <el-select v-model="pagination.sortValue" placeholder="请选择角色">
+                        <el-option
+                                v-for="item in sort"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                        >
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="2" :offset="1">
+                    <el-button
+                            type="primary"
+                            @click.prevent="getUserMsg"
+                    >搜索
+                    </el-button>
+                </el-col>
+            </el-row>
+            <el-table
+                    :data="userList"
+                    style="width: 100%"
+                    border
+            >
+                <el-table-column
+                        type="index"
+                        label="序号"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="pic"
+                        label="头像"
+                >
+                    <template slot-scope="scope">
+                        <img :src="scope.row.pic" alt="" style="display: inline-block; height: 30px; width: 30px; border-radius: 100%">
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="用户名"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="role"
+                        label="角色"
+                >
+                    <template slot-scope="scope">
+                        {{ scope.row.role  === 2 ? '经理' : '维修人员'}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        lable="操作"
+                >
+                    <template slot-scope="scope">
+                        <div class="mguser-tb-handle-box">
+                            <el-button
+                                    @click.prevent="edit(scope.$index, userList)"
+                                    type="success"
+                                    size="small"
+                                    @click="edit(scope.$index, userList)"
+                            >
+                                编辑
+                            </el-button>
+                            <el-button
+                                    type="danger"
+                                    size="small"
+                                    @click.prevent="deleteVisible = true; deleteMsg = userList[scope.$index]"
+                            >
+                                删除
+                            </el-button>
+                        </div>
+                    </template>
+                </el-table-column>
+            </el-table>
         </el-col>
-        <el-col :span="6" :offset="1" style="position: relative; height: 40px; display: block">
-            <el-select v-model="pagination.sortValue" placeholder="请选择角色">
-                <el-option
-                        v-for="item in sort"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      >
-                </el-option>
-            </el-select>
-        </el-col>
-        <el-col :span="2" :offset="1">
-            <el-button
-                    type="primary"
-                    @click.prevent="getUserMsg"
-            >搜索
-            </el-button>
+        <el-col>
+            <section class="mg-user-pagination-box" v-show="pagination.total">
+                <el-pagination
+                        layout="prev, pager, next"
+                        :current-page.sync="pagination.currentPage"
+                        :page-size="pagination.pageSize"
+                        :total="pagination.total"
+                        prev-text="上一页"
+                        next-text="下一页"
+                        background
+                >
+                </el-pagination>
+            </section>
         </el-col>
     </el-row>
-    <section class="mg-user-table-box">
-        <el-table
-                :data="userList"
-                :style="{width: `${50 + 180 + 200 + 180 + 100}px`}"
-        >
-            <el-table-column
-                    type="index"
-                    width="50"
-                    label="序号"
-            >
-            </el-table-column>
-            <el-table-column
-                    prop="pic"
-                    label="头像"
-                    width="100"
-            >
-                <template slot-scope="scope">
-                    <img :src="scope.row.pic" alt="" style="display: inline-block; height: 30px; width: 30px; border-radius: 100%">
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="name"
-                    label="用户名"
-                    width="180"
-            >
-            </el-table-column>
-            <el-table-column
-                    prop="role"
-                    label="角色"
-                    width="180"
-            >
-                <template slot-scope="scope">
-                    {{ scope.row.role  === 2 ? '经理' : '维修人员'}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                    lable="操作"
-                    width="200"
-            >
-                <template slot-scope="scope">
-                    <el-button
-                            @click.prevent="edit(scope.$index, userList)"
-                            type="success"
-                            size="small"
-                            @click="edit(scope.$index, userList)"
-                    >
-                        编辑
-                    </el-button>
-                    <el-button
-                            type="danger"
-                            size="small"
-                            @click.prevent="deleteVisible = true; deleteMsg = userList[scope.$index]"
-                    >
-                        删除
-                    </el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-    </section>
-    <section class="mg-user-pagination-box" v-show="pagination.total">
-        <el-pagination
-                layout="prev, pager, next"
-                :current-page.sync="pagination.currentPage"
-                :page-size="pagination.pageSize"
-                :total="pagination.total"
-                prev-text="上一页"
-                next-text="下一页"
-                background
-        >
-        </el-pagination>
-    </section>
     <el-dialog
             title="新增用户"
             :visible.sync="dialogVisible"
@@ -171,7 +175,6 @@
 <script>
 import {mapState} from  'vuex'
 import defaultImg from '../../assert/img/logo.png'
-import auth from  '../../mixin/auth'
 import pageLoad from '../../mixin/pageLoad'
 const btnStatus = [
     {text: '确定', loading: false},
@@ -195,7 +198,7 @@ export default {
             ],
             pagination: {
 	            currentPage: 1,
-                pageSize: 5,
+                pageSize: 10,
                 total: null,
                 search: null,
 	            sortValue: null
@@ -252,7 +255,7 @@ export default {
             }
         }
     },
-    mixins: [auth, pageLoad],
+    mixins: [pageLoad],
     watch: {
 		'pagination': {
 			handler () {
@@ -404,9 +407,6 @@ export default {
             })
         }
     },
-    created () {
-		this.$mx_getLoginMsg()
-    },
     mounted() {
 		this.getUserMsg()
 	    setTimeout(() => {
@@ -424,8 +424,13 @@ export default {
             position: relative;
             margin-top: 10px;
         }
-        .select-box {
+        .mg-user-filter-box {
             margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .mguser-tb-handle-box {
+            display: flex;
+            justify-content: space-around;
         }
     }
 </style>

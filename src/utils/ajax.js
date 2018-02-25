@@ -34,7 +34,7 @@ export const post = ({url, params = {}}) => {
 				for (let k in data) {
 					data[k] && (cs = `${cs}${k}=${encodeURIComponent(data[k])}&`)
 				}
-				return cs
+				return cs.replace(/&$/, '')
 			}
 		]
 	}).then(({data: {flag, data, errMsg}}) => {

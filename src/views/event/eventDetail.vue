@@ -31,7 +31,6 @@
     </div>
 </template>
 <script>
-import auth from '../../mixin/auth'
 import pageLoad from '../../mixin/pageLoad'
 import richEditor from '../../components/richEditor.vue'
 import eventComment from '../../components/event/eventComment.vue'
@@ -61,7 +60,7 @@ export default {
             }
         }
     },
-	mixins: [pageLoad, auth],
+	mixins: [pageLoad],
     methods: {
 	    postComment () {
 	    	this.$store.dispatch('event/postEventComment', {

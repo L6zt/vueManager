@@ -35,7 +35,6 @@
 
 <script>
 import clipImage from '../../components/clip/clipImage.vue'
-import auth from '../../mixin/auth'
 import defaultImg from '../../assert/img/logo.png'
 export default {
 	data () {
@@ -53,7 +52,6 @@ export default {
             }
         }
     },
-    mixins: [auth],
     watch: {
 		'mx_userMsg': {
 			handler () {

@@ -36,7 +36,6 @@
 </template>
 <script>
 import {mapState} from 'vuex'
-import auth from '../../mixin/auth'
 import userHead from '../../components/user/userHeaed.vue'
 import defaultImg from '../../assert/img/logo.png'
 export default {
@@ -48,10 +47,6 @@ export default {
         ...mapState({
             src: state => (state.auth.user || {}).pic || defaultImg
         })
-    },
-    mixins: [auth],
-    created () {
-		this.$mx_getLoginMsg()
     },
     components:{userHead}
 }

@@ -4,13 +4,12 @@
     </div>
 </template>
 <script>
-import auth from '../../mixin/pageLoad'
 import pageLoad from '../../mixin/pageLoad'
 export default {
 	data () {
 	    return {}
     },
-    mixins: [auth, pageLoad],
+    mixins: [pageLoad],
     mounted () {
 		setTimeout(() => {
 			this.$store.commit('changeLoadStatus', false)

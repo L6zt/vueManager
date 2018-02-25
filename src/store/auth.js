@@ -60,7 +60,7 @@ export default {
 				url: `${baseUrl}/auth/modifyUserMsg`,
 				params: playLoad
 			}).then(({data, flag, errMsg}) => {
-				commit('edUserMsg',playLoad)
+				// commit('edUserMsg',playLoad)
 				return {data, flag, state}
 			})
 		},

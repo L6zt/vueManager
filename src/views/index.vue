@@ -1,7 +1,7 @@
 <template>
     <el-container>
-        <el-aside  width="200px">
-            <el-menu :default-openeds="['1', '2']" class="slide-menu-left" :router="true">
+        <el-aside  width="220px">
+            <el-menu :default-openeds="['1', '2']" class="slide-menu-left" :router="true" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
                 <el-submenu index="1" v-if="(mx_userMsg || {}).role !== 3">
                     <template slot="title"><i class="el-icon-message"></i>用户管理</template>
                     <el-menu-item index="/mgUser" >用户列表</el-menu-item>
@@ -25,20 +25,15 @@
 </template>
 <script>
 import pageLoad from '../mixin/pageLoad'
-import auth from '../mixin/auth'
 import personMsg from '../components/personMsg.vue'
 export default {
 	data () {
 		return {}
     },
-	mixins: [auth],
-    created () {
-        this.$mx_getLoginMsg()
-    },
 	mounted () {
-//		setTimeout(() => {
-//			this.$store.commit('changeLoadStatus', false)
-//		}, 1000)
+		setTimeout(() => {
+			this.$store.commit('changeLoadStatus', false)
+		}, 1000)
 	},
     components: {personMsg}
 }
@@ -46,7 +41,7 @@ export default {
 <style lang="scss">
     .slide-menu-left {
         position: fixed;
-        width: 200px;
+        width: 220px;
         height: 100%;
         top: 0;
         left: 0;

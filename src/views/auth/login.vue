@@ -99,7 +99,7 @@ export default {
             codeLoad: false
         }
     },
-	mixins: [pageLoad, auth],
+	mixins: [pageLoad],
     computed: {
 	    status () {
 	      const {userForm: {randCode, userName, passWord}} = this
@@ -151,12 +151,16 @@ export default {
         }
     },
 	created () {
-        this.$mx_isLogin() && this.$router.push('/')
+		this.$store.dispatch('auth/getUserMsg')
+			.then(({flag, data, errMsg}) => {
+				if (flag === 1) {
+					this.$router.push('/')
+				}
+			})
     },
 	mounted () {
-		setTimeout(() => {
-			this.$store.commit('changeLoadStatus', false)
-		}, 1000)
+		console.log('xxx')
+		this.$store.commit('changeLoadStatus', false)
         this.getRandCode()
 	},
     components: {randCode}

@@ -134,7 +134,6 @@
     </div>
 </template>
 <script>
-	import auth from '../../mixin/auth'
 	import pageLoad from '../../mixin/pageLoad'
 	export default {
 		data () {
@@ -183,7 +182,7 @@
 				sUser: {}
 			}
 		},
-		mixins: [auth, pageLoad],
+		mixins: [pageLoad],
 		watch: {
 			'pagination': {
 				handler () {
