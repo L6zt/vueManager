@@ -21,7 +21,7 @@ const routes = [
 		}},
 		{path: 'event/detail/:id', component: () => import('../views/event/eventDetail.vue'), meta: {
 			auth: true
-		}}
+		}, name: 'event-cm-cmt'}
 	]
 	},
 	{path: '/auth', component: () => import('../views/auth/layout.vue'),

@@ -36,6 +36,7 @@ import richEditor from '../../components/richEditor.vue'
 import eventComment from '../../components/event/eventComment.vue'
 import defaultImg from '../../assert/img/logo.png'
 export default {
+	name: 'event-detail-ed',
 	data () {
 		return {
             form: {
