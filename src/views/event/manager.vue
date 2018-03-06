@@ -1,5 +1,5 @@
 <template>
-    <div class="mgEvent-page-container" v-if="((mx_userMsg || {}).role || 5) <  3">
+    <div class="mgEvent-page-container" v-if="(($gMxUserMsg || {}).role || 5) <  3">
         <section>
             <el-button
                     type="primary"
@@ -134,7 +134,6 @@
     </div>
 </template>
 <script>
-	import pageLoad from '../../mixin/pageLoad'
 	export default {
 		data () {
 			return {
@@ -182,7 +181,6 @@
                 sUser: {}
             }
 		},
-		mixins: [pageLoad],
         watch: {
 			'pagination': {
 				handler () {
@@ -190,7 +188,7 @@
                 },
                 deep: true
             },
-	        'mx_userMsg': {
+	        '$gMxUserMsg': {
 		        handler(v) {
 		        	if (v) {
 		        		if (v.role >  2) {
@@ -213,7 +211,7 @@
                 })
         },
 		mounted () {
-			this.$store.commit('changeLoadStatus', false)
+			this.$gMxpageLoad( false)
 		},
         methods: {
 			watch (index) {
@@ -244,11 +242,11 @@
 				console.log(index)
             },
             getEventList () {
-				const {pagination: {currentPage, pageSize}, mx_userMsg} = this
+				const {pagination: {currentPage, pageSize}, $gMxUserMsg} = this
 	             return this.$store.dispatch('event/getMgEventList', {
 		            pageIndex: currentPage,
 		            pageSize: pageSize,
-                    postid: mx_userMsg.uuid
+                    postid: $gMxUserMsg.uuid
 	            }).then(({data, flag, errMsg}) => {
 					if (flag === 1) {
 						const {eventList:{count, rows}, pUser,sUser} = data

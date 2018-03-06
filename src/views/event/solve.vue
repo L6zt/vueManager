@@ -134,7 +134,6 @@
     </div>
 </template>
 <script>
-	import pageLoad from '../../mixin/pageLoad'
 	export default {
 		data () {
 			return {
@@ -182,16 +181,16 @@
 				sUser: {}
 			}
 		},
-		mixins: [pageLoad],
 		watch: {
 			'pagination': {
 				handler () {
-					this. getEventList()
+					this.getEventList()
 				},
 				deep: true
 			},
-			'mx_userMsg': {
+			'$gMxUserMsg': {
 				handler(v) {
+					console.log(v)
 					if (v) {
 						this.getEventList()
 					}
@@ -209,7 +208,7 @@
 				})
 		},
 		mounted () {
-			this.$store.commit('changeLoadStatus', false)
+			this.$gMxpageLoad( false)
 		},
 		methods: {
 			watch (index) {
@@ -240,11 +239,11 @@
 				console.log(index)
 			},
 			getEventList () {
-				const {pagination: {currentPage, pageSize}, mx_userMsg} = this
+				const {pagination: {currentPage, pageSize}, $gMxUserMsg} = this
 				return this.$store.dispatch('event/getMgEventList', {
 					pageIndex: currentPage,
 					pageSize: pageSize,
-					solveid: mx_userMsg.uuid
+					solveid: $gMxUserMsg.uuid
 				}).then(({data, flag, errMsg}) => {
 					if (flag === 1) {
 						const {eventList:{count, rows}, pUser,sUser} = data

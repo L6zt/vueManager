@@ -1,5 +1,6 @@
 <template>
-    <section class="jc-person-msg-container">
+    <section class="person-nav-container">
+        <p class="user-name">hi, 你好<strong>{{$gMxUserMsg.name}}</strong></p>
         <el-dropdown>
             <span class="el-dropdown-link">
                 <img :src="img" class="jc-person-msg-img">
@@ -7,12 +8,12 @@
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                    <router-link to="/user/changePwd" class="user-link" tag="span">
+                    <router-link to="/profile/changePwd" class="user-link" tag="span">
                         密码修改
                     </router-link>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                    <router-link to="/user/modifyMsg" class="user-link" tag="span">
+                    <router-link to="/profile/modifyMsg" class="user-link" tag="span">
                         个人信息
                     </router-link>
                 </el-dropdown-item>
@@ -49,12 +50,16 @@ export default {
 </script>
 <style lang="scss">
 @import "../assert/css/index";
-.jc-person-msg-container {
+.person-nav-container {
     display: inline-block;
     padding: 5px 0;
     .el-dropdown-link {
         @include clear-fix;
         cursor: pointer;
+    }
+    .user-name {
+        display: inline-block;
+        padding-right: 5px;
     }
     .el-icon-arrow-down {
         vertical-align: middle;

@@ -31,7 +31,6 @@
     </div>
 </template>
 <script>
-import pageLoad from '../../mixin/pageLoad'
 import richEditor from '../../components/richEditor.vue'
 import eventComment from '../../components/event/eventComment.vue'
 import defaultImg from '../../assert/img/logo.png'
@@ -61,7 +60,6 @@ export default {
             }
         }
     },
-	mixins: [pageLoad],
     methods: {
 	    postComment () {
 	    	this.$store.dispatch('event/postEventComment', {
@@ -94,7 +92,7 @@ export default {
     },
     components: {richEditor, eventComment},
     mounted () {
-		this.$store.commit('changeLoadStatus', false)
+		this.$gMxpageLoad(false)
         this.getEventComment()
     }
 }

@@ -69,8 +69,6 @@
     </div>
 </template>
 <script>
-import pageLoad from '../../mixin/pageLoad'
-import auth from '../../mixin/auth'
 import randCode from '../../components/randCode.vue'
 const btnStatus = [
 	    {type: 'danger', disabled: true},
@@ -159,8 +157,7 @@ export default {
 			})
     },
 	mounted () {
-		console.log('xxx')
-		this.$store.commit('changeLoadStatus', false)
+		this.$gMxpageLoad(false)
         this.getRandCode()
 	},
     components: {randCode}

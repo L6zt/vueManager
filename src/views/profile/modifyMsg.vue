@@ -86,7 +86,7 @@ export default {
         }
     },
     created (){
-	    this.$store.commit('changeLoadStatus', false)
+	    this.$gMxpageLoad(false)
     },
 	components: {clipImage}
 }

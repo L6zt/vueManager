@@ -89,7 +89,7 @@ export default {
         }
     },
 	mounted () {
-		this.$store.commit('changeLoadStatus', false)
+		this.$gMxpageLoad(false)
 	},
     methods: {
 		changePwd () {

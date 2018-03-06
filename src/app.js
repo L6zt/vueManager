@@ -5,7 +5,7 @@ import Element from 'element-ui'
 import './assert/css/main.scss'
 import 'element-ui/lib/theme-chalk/index.css'
 import router from './router/index'
-import globalMixin from './mixin/global'
+import globalMixin from './mixins/global'
 import {pulginsFn} from './pulgins/index.js'
 pulginsFn(Vue)
 Vue.use(Element)

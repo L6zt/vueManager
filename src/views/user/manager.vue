@@ -1,7 +1,7 @@
 <template>
 <div class="mg-user-container">
     <el-row class="mg-user-table-box">
-        <el-col :xs="{span: 24}"  :md="{span: 18}" :lg="{span: 12}" >
+        <el-col>
             <el-row>
                 <el-col>
                     <el-button
@@ -80,7 +80,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                        lable="操作"
+                        label="操作"
                 >
                     <template slot-scope="scope">
                         <div class="mguser-tb-handle-box">
@@ -175,7 +175,6 @@
 <script>
 import {mapState} from  'vuex'
 import defaultImg from '../../assert/img/logo.png'
-import pageLoad from '../../mixin/pageLoad'
 const btnStatus = [
     {text: '确定', loading: false},
     {text: '提交中', loading: true}
@@ -255,7 +254,6 @@ export default {
             }
         }
     },
-    mixins: [pageLoad],
     watch: {
 		'pagination': {
 			handler () {
@@ -291,7 +289,7 @@ export default {
     computed: {
         ...mapState({
             userList: (state) => {
-            	return (state.mgUser.userList || []).map(item => {
+            	return (state.user.userList || []).map(item => {
             		//item.role = item.role  === 2 ? '经理' : '维修人员'
                     item.pic = item.pic ? item.pic : defaultImg
             		return item
@@ -324,7 +322,7 @@ export default {
             if (!this.isEditor) {
 	            form.validate().then(flag => {
 		            this.btnStatus = btnStatus[1]
-		            this.$store.dispatch('mgUser/createUser', {
+		            this.$store.dispatch('user/createUser', {
 			            name, role, password
 		            }).then(({errMsg}) => {
 			            if (errMsg) {
@@ -348,7 +346,7 @@ export default {
             } else {
             	form.validate().then(flag => {
             		this.btnStatus = btnStatus[1]
-                    this.$store.dispatch('mgUser/editUser',{
+                    this.$store.dispatch('user/editUser',{
                     	params: {...this.insertForm},
                         index: this.insertForm.index,
                         item: {...this.insertForm}
@@ -375,7 +373,7 @@ export default {
             this.isEditor = false
         },
 	    del () {
-            this.$store.dispatch('mgUser/delUser', {
+            this.$store.dispatch('user/delUser', {
             	name: this.deleteMsg.name
             }).then(({data, flag, errMsg}) => {
 				if (errMsg) {
@@ -393,7 +391,7 @@ export default {
         },
         getUserMsg () {
 			const {pagination: {currentPage, pageSize, search, sortValue}} = this
-            this.$store.dispatch('mgUser/getUserList', {
+            this.$store.dispatch('user/getUserList', {
             	    pageIndex: currentPage,
                     pageSize,
                     name: search,
@@ -410,7 +408,7 @@ export default {
     mounted() {
 		this.getUserMsg()
 	    setTimeout(() => {
-		    this.$store.commit('changeLoadStatus', false)
+		    this.$gMxpageLoad(false)
 	    }, 1000)
     }
 }

@@ -12,7 +12,7 @@
                     <router-link
                             to="/user/changePwd"
                             tag="span"
-                            :class="{'is-active': $route.path === '/user/changePwd'}"
+                            :class="{'is-active': $route.path === '/profile/changePwd'}"
                     >
                         修改密码
                     </router-link>
@@ -22,7 +22,7 @@
                     <router-link
                             to="/user/modifyMsg"
                             tag="span"
-                            :class="{'is-active': $route.path === '/user/modifyMsg'}"
+                            :class="{'is-active': $route.path === '/profile/modifyMsg'}"
                     >
                         修改个人信息
                     </router-link>

@@ -1,15 +1,27 @@
 <template>
     <el-container>
         <el-aside  width="220px">
-            <el-menu :default-openeds="['1', '2']" class="slide-menu-left" :router="true" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-                <el-submenu index="1" v-if="(mx_userMsg || {}).role !== 3">
+            <el-menu
+                    class="slide-menu-left"
+                    :router="true"
+                    background-color="#545c64"
+                    text-color="#fff"
+                    active-text-color="#ffd04b"
+                    :default-active="$route.path"
+            >
+
+                <el-menu-item index="/">
+                    <i class="el-icon-tickets"></i>
+                    <span slot="title">首页</span>
+                </el-menu-item>
+                <el-submenu index="1" v-if="($gMxUserMsg || {}).role !== 3">
                     <template slot="title"><i class="el-icon-message"></i>用户管理</template>
-                    <el-menu-item index="/mgUser" >用户列表</el-menu-item>
+                    <el-menu-item index="/user/manager" >用户列表</el-menu-item>
                 </el-submenu>
                 <el-submenu index="2">
                     <template slot="title"><i class="el-icon-menu"></i>事件管理</template>
-                    <el-menu-item index="/mgEvent" v-if="(mx_userMsg || {}) .role < 3">我的事件</el-menu-item>
-                    <el-menu-item index="/solveEvent" v-else>我的事件</el-menu-item>
+                    <el-menu-item index="/event/manager" v-if="($gMxUserMsg || {}) .role < 3">我的事件</el-menu-item>
+                    <el-menu-item index="/event/solve" v-else>我的事件</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-aside>
@@ -24,7 +36,6 @@
     </el-container>
 </template>
 <script>
-import pageLoad from '../mixin/pageLoad'
 import personMsg from '../components/personMsg.vue'
 export default {
 	data () {
@@ -32,7 +43,7 @@ export default {
     },
 	mounted () {
 		setTimeout(() => {
-			this.$store.commit('changeLoadStatus', false)
+			this.$gMxpageLoad(false)
 		}, 1000)
 	},
     components: {personMsg}
