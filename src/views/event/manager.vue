@@ -46,6 +46,14 @@
               </template>
           </el-table-column>
           <el-table-column
+                  prop="pstatus"
+                  label="状态"
+          >
+             <template slot-scope="scope">
+                 {{scope.row.pstatus === 0 ? '未解决' : (scope.row.pstatus === 1 ?  '已解决' : scope.row.pstatus)}}
+             </template>
+          </el-table-column>
+          <el-table-column
                   prop="create_time"
                   label="生成时间"
           >
@@ -58,7 +66,7 @@
                       查看
                   </el-button>
                   <el-button type="success" size="small" @click="edit(scope.$index)">
-                      编辑
+                      修改
                   </el-button>
                   <el-button type="danger" size="small" @click="del(scope.$index)">
                       删除
@@ -66,7 +74,7 @@
               </template>
           </el-table-column>
       </el-table>
-        <section class="mgEvent--pagination-box" v-show="pagination.total">
+      <section class="mgEvent--pagination-box" v-show="pagination.total">
             <el-pagination
                     layout="prev, pager, next"
                     :current-page.sync="pagination.currentPage"
@@ -78,8 +86,8 @@
             >
             </el-pagination>
         </section>
-        <el-dialog
-                :visible.sync="isShow"
+      <el-dialog
+                :visible.sync="createShow"
                 v-model="form"
         >
             <el-form
@@ -169,7 +177,8 @@
                     content: null,
 					solveid: null
                 },
-                isShow: false,
+                createShow: false,
+				delShow: false,
 				pagination: {
 					total: 0,
                     currentPage: 1,
@@ -184,7 +193,7 @@
         watch: {
 			'pagination': {
 				handler () {
-					this. getEventList()
+					this.getEventList()
                 },
                 deep: true
             },
@@ -215,10 +224,11 @@
 		},
         methods: {
 			watch (index) {
-				this.$router.push(`/event/detail/${this.eventList[index].uuid}`)
+				const {uuid, title} = this.eventList[index]
+				this.$router.push(`/event/detail/${uuid}?title=${title}`)
             },
             add () {
-                this.isShow = true
+                this.createShow = true
             },
             save () {
 				this.$refs['form'].validate().then(flag => {
@@ -228,7 +238,7 @@
                         	    if (flag === 1) {
 		                            this.getEventList()
                                         .then(() => {
-	                                        this.isShow = false
+	                                        this.createShow = false
                                         })
 	                            }
                             })
@@ -236,13 +246,55 @@
                 })
             },
             edit(index) {
-				console.log(index)
             },
             del(index) {
-				console.log(index)
+				const item = this.eventList[index]
+                const {title, uuid} = item
+	            this.$msgbox({
+                    title: `谨慎操作！！！`,
+                    message: `是否要删除 此条 标题为${title}的事件?`,
+		            type: 'warning',
+                    showCancelButton: true,
+                    confirmButton: '确定',
+                    cancelButtonText: '取消',
+                    beforeClose: (action, instance, done) => {
+                    	if (action === 'confirm') {
+                    		instance.confirmButtonLoading = true
+                            instance.confirmButtonText = '删除中...'
+                            this.$store.dispatch('event/delEvent',{
+                            	uuid
+                            }).then(({flag, data, errMsg}) => {
+                            	if (flag === 1) {
+                            		this.$message({
+                                        message: '删除成功',
+                                        type: 'success'
+                                    })
+		                            instance.confirmButtonLoading = false
+                                    this.getEventList()
+                            		done()
+                                } else {
+		                            this.$message({
+			                            message: errMsg,
+			                            type: 'warning'
+		                            })
+                                    instance.confirmButtonLoading = false
+                                    done()
+                                }
+                            }).catch(e => {
+                            	this.$message({
+                                    message: '删除失败',
+                                    type: 'warning'
+                                })
+	                            instance.confirmButtonLoading = false
+                            })
+                        } else  {
+                    		done()
+                        }
+                    }
+                })
             },
             getEventList () {
-				const {pagination: {currentPage, pageSize}, $gMxUserMsg} = this
+				 const {pagination: {currentPage, pageSize}, $gMxUserMsg} = this
 	             return this.$store.dispatch('event/getMgEventList', {
 		            pageIndex: currentPage,
 		            pageSize: pageSize,

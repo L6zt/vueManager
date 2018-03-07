@@ -31,6 +31,15 @@ export default {
 				return {data, flag, errMsg}
 			})
 		},
+		delEvent ({commit, state}, playLoad) {
+			// /event/delete
+			return post({
+				url: `${baseUrl}/event/delete`,
+				params: playLoad
+			}).then(({data, flag, errMsg}) => {
+				return {data, flag, errMsg}
+			})
+		},
 		getEventComment ({commit, state}, playLoad) {
 			return post({
 				url: `${baseUrl}/event/getEventComment`,

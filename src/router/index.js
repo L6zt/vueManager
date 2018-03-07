@@ -14,10 +14,6 @@ const routes = [
 			auth: true,
 			name: 'userManager'
 		}},
-		{path: 'event', component: () => import('../views/event/index.vue'), meta: {
-			auth: true,
-			name: 'eventIndex'
-		}},
 		{path: 'event/manager', component: () => import('../views/event/manager.vue'), meta: {
 			auth: true,
 			name: 'eventManager'

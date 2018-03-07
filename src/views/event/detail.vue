@@ -1,5 +1,8 @@
 <template>
     <div class="event-detail-container">
+        <h3 class="event-detail-title">
+            {{$route.query.title}}
+        </h3>
         <event-comment
                 v-for="item, index in commentList"
                 :key="index"
@@ -24,7 +27,7 @@
             </el-form-item>
             <el-form-item>
                 <section style="text-align: center">
-                    <el-button type="success" @click="postComment">发布</el-button>
+                    <el-button type="primary" @click="postComment">发送</el-button>
                 </section>
             </el-form-item>
         </el-form>
@@ -53,7 +56,7 @@ export default {
     },
     computed: {
 		myMsg () {
-			const myMsg = this.mx_userMsg || {}
+			const myMsg = this.$gMxUserMsg || {}
 			return {
 				pic: myMsg.pic || defaultImg,
                 name: myMsg.name
@@ -108,6 +111,13 @@ export default {
             /*margin: 10px 0;*/
         /*}*/
     /*}*/
+    .event-detail-title {
+        color: $head-color;
+        font-size: $font-size-normal-title;
+        text-align: center;
+        line-height: 40px;
+        margin-bottom: 20px;
+    }
     .w-e-text {
         overflow: auto;
     }

@@ -97,7 +97,6 @@ export default {
             codeLoad: false
         }
     },
-	mixins: [pageLoad],
     computed: {
 	    status () {
 	      const {userForm: {randCode, userName, passWord}} = this

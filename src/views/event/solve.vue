@@ -1,15 +1,5 @@
 <template>
     <div class="mgEvent-page-container">
-        <section>
-            <el-button
-                    type="primary"
-                    size="small"
-                    @click="add"
-            >
-                <i class="el-icon-circle-plus-outline"></i>
-                新增
-            </el-button>
-        </section>
         <el-table
                 :data="eventList"
                 size="small"
@@ -38,17 +28,17 @@
                 </template>
             </el-table-column>
             <el-table-column
-                    prop="solveid"
-                    label="维修人员"
-            >
-                <template  slot-scope="scope">
-                    {{scope.row.solveid ? (sUser[scope.row.solveid] || {})['name'] : '暂无'}}
-                </template>
-            </el-table-column>
-            <el-table-column
                     prop="create_time"
                     label="生成时间"
             >
+            </el-table-column>
+            <el-table-column
+                    prop="pstatus"
+                    label="状态"
+            >
+                <template slot-scope="scope">
+                    {{scope.row.pstatus === 0 ? '未解决' : (scope.row.pstatus === 1 ?  '已解决' : scope.row.pstatus)}}
+                </template>
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -56,12 +46,6 @@
                 <template slot-scope="scope">
                     <el-button type="primary" size="small" @click="watch(scope.$index)">
                         查看
-                    </el-button>
-                    <el-button type="success" size="small" @click="edit(scope.$index)">
-                        编辑
-                    </el-button>
-                    <el-button type="danger" size="small" @click="del(scope.$index)">
-                        删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -78,98 +62,12 @@
             >
             </el-pagination>
         </section>
-        <el-dialog
-                :visible.sync="isShow"
-                v-model="form"
-        >
-            <el-form
-                    class="mg-event-form-container"
-                    :rules="rules"
-                    :model="form"
-                    ref="form"
-            >
-                <el-form-item
-                        prop="title"
-                        label="标题："
-                >
-                    <el-input
-                            v-model="form.title"
-                            placeholder="请输入标题"
-                    >
-
-                    </el-input>
-                </el-form-item>
-                <el-form-item
-                        prop="content"
-                        label="简介："
-                >
-                    <el-input v-model="form.content"
-                              type="textarea"
-                              :rows="2"
-                              placeholder="请输入简介"
-                    >
-                    </el-input>
-                </el-form-item>
-                <el-form-item
-                        prop="solveid"
-                        label="维修人"
-                >
-                    <el-select v-model="form.solveid">
-                        <el-option
-                                v-for="item in solveUser"
-                                :key="item.uuid"
-                                :label="item.name"
-                                :value="item.uuid"
-                        >
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" style="display: block; margin:  0 auto" @click="save">
-                        确定
-                    </el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog>
     </div>
 </template>
 <script>
 	export default {
 		data () {
 			return {
-				rules: {
-					title: [
-						{required: true, message: '标题不能为空'},
-						{required: true,
-							validator: (rule, value, cb) => {
-								const lg = value.length
-								if (lg < 25) {
-									return cb()
-								}
-								cb(new Error('标题不能超过25字符'))
-							}}
-					],
-					content: [
-						{required: true, message: '简介不能为空'},
-						{required: true,
-							validator: (rule, value, cb) => {
-								const lg = value.length
-								if (lg < 100) {
-									return cb()
-								}
-								cb(new Error('标题不能超过100字符'))
-							}}
-					],
-					solveid: [
-						{required: true, message: '维修人不能为空'}
-					]
-				},
-				form: {
-					title: null,
-					content: null,
-					solveid: null
-				},
-				isShow: false,
 				pagination: {
 					total: 0,
 					currentPage: 1,
@@ -190,7 +88,6 @@
 			},
 			'$gMxUserMsg': {
 				handler(v) {
-					console.log(v)
 					if (v) {
 						this.getEventList()
 					}
@@ -213,30 +110,6 @@
 		methods: {
 			watch (index) {
 				this.$router.push(`/event/detail/${this.eventList[index].uuid}`)
-			},
-			add () {
-				this.isShow = true
-			},
-			save () {
-				this.$refs['form'].validate().then(flag => {
-					if (flag) {
-						this.$store.dispatch('event/createEvent', this.form)
-							.then(({data, flag, errMsg}) => {
-								if (flag === 1) {
-									this.getEventList()
-										.then(() => {
-											this.isShow = false
-										})
-								}
-							})
-					}
-				})
-			},
-			edit(index) {
-				console.log(index)
-			},
-			del(index) {
-				console.log(index)
 			},
 			getEventList () {
 				const {pagination: {currentPage, pageSize}, $gMxUserMsg} = this

@@ -7,18 +7,18 @@
                     background-color="#545c64"
                     text-color="#fff"
                     active-text-color="#ffd04b"
-                    :default-active="$route.path"
+                    :default-active="activeNav"
             >
 
                 <el-menu-item index="/">
                     <i class="el-icon-tickets"></i>
                     <span slot="title">首页</span>
                 </el-menu-item>
-                <el-submenu index="1" v-if="($gMxUserMsg || {}).role !== 3">
+                <el-submenu index="nav01" v-if="($gMxUserMsg || {}).role !== 3">
                     <template slot="title"><i class="el-icon-message"></i>用户管理</template>
                     <el-menu-item index="/user/manager" >用户列表</el-menu-item>
                 </el-submenu>
-                <el-submenu index="2">
+                <el-submenu index="nav02">
                     <template slot="title"><i class="el-icon-menu"></i>事件管理</template>
                     <el-menu-item index="/event/manager" v-if="($gMxUserMsg || {}) .role < 3">我的事件</el-menu-item>
                     <el-menu-item index="/event/solve" v-else>我的事件</el-menu-item>
@@ -40,6 +40,15 @@ import personMsg from '../components/personMsg.vue'
 export default {
 	data () {
 		return {}
+    },
+    computed: {
+		activeNav () {
+			let {path} = this.$route
+            if ((/\/event\/*?/).test(path)) {
+				path = '/event/manager'
+            }
+            return path
+        }
     },
 	mounted () {
 		setTimeout(() => {

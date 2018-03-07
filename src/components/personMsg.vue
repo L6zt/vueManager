@@ -41,7 +41,7 @@ export default {
                 .then(({flag, data, errMsg}) => {
             	    if (flag === 1) {
             	    	this.$store.commit('clearAllState')
-            	    	this.$router.push('auth/login')
+            	    	this.$router.push('/auth/login')
                     }
                 })
         }

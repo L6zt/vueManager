@@ -1,12 +1,16 @@
 <template>
     <div class="event-comment-container">
         <div class="person-msg-container">
-            <img :src="personMsg.pic" alt="">
+            <img class="event-comment-pimg":src="personMsg.pic" alt="">
             <i>{{personMsg.name}}</i>
         </div>
         <div class="event-comment-content-container">
             <slot></slot>
         </div>
+        <p class="event-comment-time">
+            发表时间
+            <time>2012-14-12</time>
+        </p>
     </div>
 </template>
 <script>
@@ -25,13 +29,13 @@ export default {
 }
 </script>
 <style lang="scss">
+@import "../../assert/css/index";
 .event-comment-container {
     position: relative;
-    padding-left: 120px;
-    min-height: 130px;
     margin-bottom: 30px;
-    left: 0;
-    top: 0;
+    box-shadow: 0 0  3px $box-shadow-dark-color;
+    padding: 10px 10px 10px 120px;
+    min-height: 130px;
     .person-msg-container {
         position: absolute;
         left: 0;
@@ -43,11 +47,19 @@ export default {
             width: 100px;
             height: 100px;
             margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 100%;
         }
     }
     .event-comment-content-container {
         position: relative;
         padding-top: 10px;
+        min-height: 300px;
+    }
+    .event-comment-time {
+        text-align: right;
+        font-size: 12px;
+        color: #ccc;
     }
 }
 </style>
