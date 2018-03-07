@@ -53,10 +53,10 @@ export default {
         }
     },
     watch: {
-		'mx_userMsg': {
-			handler () {
-				this.user.nick_name = (this.mx_userMsg || {}).nick_name
-                this.user.pic = (this.mx_userMsg || {}).pic
+		'$gmxUserMsg': {
+			handler (v) {
+				this.user.nick_name = (v || {}).nick_name
+                this.user.pic = (v || {}).pic
                 this.user.pic = this.user.pic ?  `${this.user.pic}`: defaultImg
             },
 			deep: true,

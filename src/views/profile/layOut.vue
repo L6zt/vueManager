@@ -5,12 +5,12 @@
             <aside class="user-left-menu">
                 <section class="user-person-msg">
                     <img :src="src" alt="">
-                    <span>{{(mx_userMsg || {}).name}}</span>
+                    <span>{{($gMxUserMsg || {}).name}}</span>
                 </section>
                 <section class="user-menu-item">
                     <i class="el-icon-edit"></i>
                     <router-link
-                            to="/user/changePwd"
+                            to="/profile/changePwd"
                             tag="span"
                             :class="{'is-active': $route.path === '/profile/changePwd'}"
                     >
@@ -20,7 +20,7 @@
                 <section  class="user-menu-item">
                     <i class="el-icon-tickets"></i>
                     <router-link
-                            to="/user/modifyMsg"
+                            to="/profile/modifyMsg"
                             tag="span"
                             :class="{'is-active': $route.path === '/profile/modifyMsg'}"
                     >
@@ -76,6 +76,11 @@ export default {
             }
             text-align: center;
             font-size: $font-size-normal-title;
+            span {
+                display: block;
+                line-height: 30px;
+                text-align: center;
+            }
         }
         .user-menu-item {
             position: relative;

@@ -40,7 +40,7 @@ const routes = [
 			{path: 'changePwd', component: () => import('../views/profile/changePwd.vue'), mata: {
 				auth: true
 			}, name: 'profile/changePwd'},
-			{path: 'modifyMsg', component: () => import('../views/profile//modifyMsg.vue'), meta: {
+			{path: 'modifyMsg', component: () => import('../views/profile/modifyMsg.vue'), meta: {
 				auth: true
 			}, name: 'profile/modifyMsg'},
 			{path: '*', component: () => import('../views/404.vue')}
