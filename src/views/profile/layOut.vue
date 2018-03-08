@@ -4,7 +4,7 @@
         <section class="user-common-content">
             <aside class="user-left-menu">
                 <section class="user-person-msg">
-                    <img :src="src" alt="">
+                    <img :src="src || userDefaultImg" alt="">
                     <span>{{($gMxUserMsg || {}).name}}</span>
                 </section>
                 <section class="user-menu-item">
@@ -37,7 +37,6 @@
 <script>
 import {mapState} from 'vuex'
 import userHead from '../../components/user/userHeaed.vue'
-import defaultImg from '../../assert/img/logo.png'
 export default {
 	data () {
 		return {
@@ -45,7 +44,7 @@ export default {
     },
     computed: {
         ...mapState({
-            src: state => (state.auth.user || {}).pic || defaultImg
+            src: state => (state.auth.user || {}).pic
         })
     },
     components:{userHead}

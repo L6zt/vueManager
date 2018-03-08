@@ -35,7 +35,6 @@
 
 <script>
 import clipImage from '../../components/clip/clipImage.vue'
-import defaultImg from '../../assert/img/logo.png'
 export default {
 	data () {
 		return {
@@ -55,9 +54,10 @@ export default {
     watch: {
 		'$gmxUserMsg': {
 			handler (v) {
+				console.log(this)
 				this.user.nick_name = (v || {}).nick_name
                 this.user.pic = (v || {}).pic
-                this.user.pic = this.user.pic ?  `${this.user.pic}`: defaultImg
+                this.user.pic = this.user.pic ?  `${this.user.pic}`: this.userDefaultImg
             },
 			deep: true,
 			immediate: true

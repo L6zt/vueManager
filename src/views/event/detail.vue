@@ -1,5 +1,9 @@
 <template>
     <div class="event-detail-container">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: eventNav }">我的事件</el-breadcrumb-item>
+            <el-breadcrumb-item>事件详情</el-breadcrumb-item>
+        </el-breadcrumb>
         <h3 class="event-detail-title">
             {{$route.query.title}}
         </h3>
@@ -55,6 +59,21 @@ export default {
         }
     },
     computed: {
+	    eventNav () {
+		    const {role} = this.$gMxUserMsg || {}
+		    switch (role) {
+			    case undefined: {
+				    return '/event'
+			    }
+			    case 1 :
+			    case 2 : {
+				    return '/event/manager'
+			    }
+			    default: {
+				    return '/event/solve'
+			    }
+		    }
+	    },
 		myMsg () {
 			const myMsg = this.$gMxUserMsg || {}
 			return {
@@ -97,6 +116,7 @@ export default {
     mounted () {
 		this.$gMxpageLoad(false)
         this.getEventComment()
+        console.log(this.$router)
     }
 }
 </script>

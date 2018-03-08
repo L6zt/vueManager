@@ -1,7 +1,7 @@
 <template>
     <div class="event-comment-container">
         <div class="person-msg-container">
-            <img class="event-comment-pimg":src="personMsg.pic" alt="">
+            <img class="event-comment-pimg":src="personMsg.pic || userDefaultImg" alt="">
             <i>{{personMsg.name}}</i>
         </div>
         <div class="event-comment-content-container">
@@ -21,7 +21,7 @@ export default {
             default () {
 				return {
 					name: '未知',
-                    pic: require('../../assert/img/logo.png')
+                    pic: undefined
                 }
             }
         }

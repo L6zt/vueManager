@@ -3,7 +3,7 @@
         <p class="user-name">hi, 你好<strong>{{$gMxUserMsg.name}}</strong></p>
         <el-dropdown>
             <span class="el-dropdown-link">
-                <img :src="img" class="jc-person-msg-img">
+                <img :src="img || userDefaultImg" class="jc-person-msg-img">
                 <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -28,11 +28,10 @@
 </template>
 <script>
 import {mapState} from 'vuex'
-import defaultImg from  '../assert/img/logo.png'
 export default {
 	computed: {
         ...mapState({
-            img: state =>(state.auth.user || {}).pic || defaultImg
+            img: state =>(state.auth.user || {}).pic
         })
     },
 	methods: {

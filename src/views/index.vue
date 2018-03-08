@@ -42,10 +42,25 @@ export default {
 		return {}
     },
     computed: {
+		eventNav () {
+			const {role} = this.$gMxUserMsg || {}
+			switch (role) {
+                case undefined: {
+                	return '/event'
+                }
+                case 1 :
+                case 2 : {
+	                return '/event/manager'
+                }
+                default: {
+                	return '/event/solve'
+                }
+            }
+        },
 		activeNav () {
 			let {path} = this.$route
             if ((/\/event\/*?/).test(path)) {
-				path = '/event/manager'
+				path = this.eventNav
             }
             return path
         }

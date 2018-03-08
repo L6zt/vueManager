@@ -8,6 +8,7 @@
 </template>
 <script>
     import pageLoad from '../components/pageLoad.vue'
+    import io from 'socket.io-client'
     import {mapState} from 'vuex'
     export default {
         computed: {
@@ -15,7 +16,16 @@
                 isShowLoad: state => state.pageLoad
             })
         },
-        components: {pageLoad}
+        components: {pageLoad},
+        mounted () {
+        	const socket = io('http://koa.jcmark.cn')
+            socket.on('connect', () => {
+            	console.log(socket.id)
+            })
+            socket.on('news', data => {
+            	console.log(data)
+            })
+        }
     }
 </script>
 <style>
