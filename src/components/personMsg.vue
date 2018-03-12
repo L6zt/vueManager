@@ -1,6 +1,6 @@
 <template>
     <section class="person-nav-container">
-        <p class="user-name">hi, 你好<strong>{{$gMxUserMsg.name}}</strong></p>
+        <p class="user-name">hi, 你好<strong>{{($gMxUserMsg || {}).name}}</strong></p>
         <el-dropdown>
             <span class="el-dropdown-link">
                 <img :src="img || userDefaultImg" class="jc-person-msg-img">

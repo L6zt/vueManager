@@ -43,30 +43,15 @@ export default {
         }
     },
     computed: {
-		eventNav () {
-			const {role} = this.$gMxUserMsg || {}
-			switch (role) {
-                case undefined: {
-                	return '/event'
-                }
-                case 1 :
-                case 2 : {
-	                return '/event/manager'
-                }
-                default: {
-                	return '/event/solve'
-                }
-            }
-        },
 		activeNav () {
 			let {path} = this.$route
             if ((/\/event\/*?/).test(path)) {
-				path = this.eventNav
+				path = this.powerList['/event/manager'] ? '/event/manager' : '/event/solve'
             }
             return path
         },
         powerList () {
-			const role = this.$gMxUserMsg.role
+			const role = (this.$gMxUserMsg || {}).role
             switch (role) {
                 case 1: {
                 	return {
@@ -74,7 +59,7 @@ export default {
 			                '/user': true,
 			                '/user/manager': true,
 			                '/event/manager': true,
-			                '/event/solve': true
+			                '/event/solve': false
 		                }
                 }
                 case 2 : {
@@ -83,7 +68,7 @@ export default {
 		                '/user': true,
 		                '/user/manager': true,
 		                '/event/manager': true,
-		                '/event/solve': true
+		                '/event/solve': false
 	                }
                 }
                 case 3 : {
