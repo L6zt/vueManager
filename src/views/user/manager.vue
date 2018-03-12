@@ -174,7 +174,6 @@
 </template>
 <script>
 import {mapState} from  'vuex'
-import defaultImg from '../../assert/img/logo.png'
 const btnStatus = [
     {text: '确定', loading: false},
     {text: '提交中', loading: true}
@@ -261,7 +260,7 @@ export default {
             },
             deep: true
         },
-        'mx_userMsg': {
+        '$gMxUserMsg': {
 			handler(v) {
 				const role = (v || {}).role
                 switch (role) {
@@ -287,15 +286,14 @@ export default {
         }
     },
     computed: {
-        ...mapState({
-            userList: (state) => {
+            userList () {
+            	const state = this.$store.state
             	return (state.user.userList || []).map(item => {
             		//item.role = item.role  === 2 ? '经理' : '维修人员'
-                    item.pic = item.pic ? item.pic : defaultImg
+                    item.pic = item.pic ? item.pic : this.userDefaultImg
             		return item
                 })
             }
-        })
     },
     methods: {
 		initInsertForm () {

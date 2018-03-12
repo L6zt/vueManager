@@ -14,14 +14,14 @@
                     <i class="el-icon-tickets"></i>
                     <span slot="title">首页</span>
                 </el-menu-item>
-                <el-submenu index="nav01" v-if="($gMxUserMsg || {}).role !== 3">
+                <el-submenu index="/user" v-if="hasPower('/user')">
                     <template slot="title"><i class="el-icon-message"></i>用户管理</template>
-                    <el-menu-item index="/user/manager" >用户列表</el-menu-item>
+                    <el-menu-item index="/user/manager" v-if="hasPower('/user/manager')">用户列表</el-menu-item>
                 </el-submenu>
-                <el-submenu index="nav02">
+                <el-submenu index="/event" v-if="hasPower('/event')">
                     <template slot="title"><i class="el-icon-menu"></i>事件管理</template>
-                    <el-menu-item index="/event/manager" v-if="($gMxUserMsg || {}) .role < 3">我的事件</el-menu-item>
-                    <el-menu-item index="/event/solve" v-else>我的事件</el-menu-item>
+                    <el-menu-item index="/event/manager" v-if="hasPower('/event/manager')">我的事件</el-menu-item>
+                    <el-menu-item index="/event/solve" v-if="hasPower('/event/solve')">我的事件</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-aside>
@@ -39,7 +39,8 @@
 import personMsg from '../components/personMsg.vue'
 export default {
 	data () {
-		return {}
+		return {
+        }
     },
     computed: {
 		eventNav () {
@@ -63,6 +64,41 @@ export default {
 				path = this.eventNav
             }
             return path
+        },
+        powerList () {
+			const role = this.$gMxUserMsg.role
+            switch (role) {
+                case 1: {
+                	return {
+			                '/event': true,
+			                '/user': true,
+			                '/user/manager': true,
+			                '/event/manager': true,
+			                '/event/solve': true
+		                }
+                }
+                case 2 : {
+	                return {
+		                '/event': true,
+		                '/user': true,
+		                '/user/manager': true,
+		                '/event/manager': true,
+		                '/event/solve': true
+	                }
+                }
+                case 3 : {
+	                return {
+		                '/event': true,
+		                '/user': false,
+		                '/user/manager': false,
+		                '/event/manager': false,
+		                '/event/solve': true
+	                }
+                }
+                default: {
+                	return {}
+                }
+            }
         }
     },
 	mounted () {
@@ -70,6 +106,11 @@ export default {
 			this.$gMxpageLoad(false)
 		}, 1000)
 	},
+    methods: {
+		hasPower (index) {
+			return this.powerList[index]
+        }
+    },
     components: {personMsg}
 }
 </script>

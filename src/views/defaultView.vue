@@ -31,7 +31,8 @@
 </template>
 <script>
     import Sortable from 'sortablejs'
-	export default {
+    import mainNav from '../components/nav/mainNav.vue'
+    export default {
     	dragMsg: {
     		elem: null,
             sortTable: null
@@ -97,7 +98,8 @@
 				    address: '上海市普陀区金沙江路 1516 弄'
 			    })}, 2000)
 	        this.$gMxpageLoad(false)
-        }
+        },
+        components: {mainNav}
 	}
 </script>
 <style>
