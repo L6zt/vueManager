@@ -4,15 +4,20 @@
   "description": "question mannager",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config ./dev/dev.js --hot"
+    "dev": "webpack-dev-server --config ./dev/dev.js --hot",
+    "publish": "rimraf dist && cross-env NODE_ENV=production webpack --config ./dev/dev.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.17.1",
+    "compression-webpack-plugin": "^1.1.11",
+    "cross-env": "^5.1.4",
     "element-ui": "^2.1.0",
+    "extract-text-webpack-plugin": "^3.0.2",
     "jquery": "^3.3.1",
     "js-cookie": "^2.2.0",
+    "rimraf": "^2.6.2",
     "socket.io-client": "^2.0.4",
     "sortablejs": "^1.7.0",
     "vue": "^2.5.13",
@@ -37,8 +42,10 @@
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.7.2",
     "postcss-loader": "^2.1.0",
+    "prefetch-polyfill-webpack-plugin": "^0.2.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.1",
+    "uglifyjs-webpack-plugin": "^1.2.3",
     "url-loader": "^0.6.2",
     "vue-loader": "^14.1.1",
     "vue-style-loader": "^3.1.2",

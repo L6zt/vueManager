@@ -7,6 +7,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import router from './router/index'
 import globalMixin from './mixins/global'
 import {pulginsFn} from './pulgins/index.js'
+// 注入css 文件
+import './components/style/comPStyle'
 pulginsFn(Vue)
 Vue.use(Element)
 Vue.mixin(globalMixin)

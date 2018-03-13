@@ -1,0 +1,21 @@
+@import "../../../assert/css/index.scss";
+.user-common-header {
+  position: relative;
+  padding: 20px 0;
+  font-size: $font-size-big-title;
+  background: $head-color;
+  color: #fff;
+  letter-spacing: 3px;
+  line-height: 1;
+  nav {
+    @include main-container;
+    text-align: center;
+  }
+  .user-go-home {
+    position: relative;
+    float: left;
+    margin-left: 10px;
+    cursor: pointer;
+    z-index: 2;
+  }
+}

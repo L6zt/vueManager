@@ -34,21 +34,21 @@
         }
     }
 </script>
-<style lang="scss">
-@import "../assert/css/var";
-.jc-rand-code{
-    position: relative;
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    cursor: pointer;
-    .jc-rand-code-con {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-    .jc-rand-code-tip {
-        font-size: $font-size-comment;
-    }
-}
-</style>
+<!--<style lang="scss">-->
+<!--@import "../assert/css/var";-->
+<!--.jc-rand-code{-->
+    <!--position: relative;-->
+    <!--display: inline-flex;-->
+    <!--flex-direction: column;-->
+    <!--justify-content: center;-->
+    <!--cursor: pointer;-->
+    <!--.jc-rand-code-con {-->
+        <!--position: relative;-->
+        <!--width: 100%;-->
+        <!--height: 100%;-->
+    <!--}-->
+    <!--.jc-rand-code-tip {-->
+        <!--font-size: $font-size-comment;-->
+    <!--}-->
+<!--}-->
+<!--</style>-->

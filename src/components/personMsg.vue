@@ -47,36 +47,36 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-@import "../assert/css/index";
-.person-nav-container {
-    display: inline-block;
-    padding: 5px 0;
-    .el-dropdown-link {
-        @include clear-fix;
-        cursor: pointer;
-    }
-    .user-name {
-        display: inline-block;
-        padding-right: 5px;
-    }
-    .el-icon-arrow-down {
-        vertical-align: middle;
-    }
-    .jc-person-msg-img {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        border-radius: 100%;
-        vertical-align: middle;
-        border: 1px solid $border-normal-color;
-        transition: all 300ms ease;
-        &:hover {
-            transform: rotate(180deg);
-        }
-    }
-    .user-link {
-        text-decoration: none;
-    }
-}
-</style>
+<!--<style lang="scss" type="text/scss" rel="stylesheet/scss" >-->
+<!--@import "../assert/css/index";-->
+<!--.person-nav-container {-->
+    <!--display: inline-block;-->
+    <!--padding: 5px 0;-->
+    <!--.el-dropdown-link {-->
+        <!--@include clear-fix;-->
+        <!--cursor: pointer;-->
+    <!--}-->
+    <!--.user-name {-->
+        <!--display: inline-block;-->
+        <!--padding-right: 5px;-->
+    <!--}-->
+    <!--.el-icon-arrow-down {-->
+        <!--vertical-align: middle;-->
+    <!--}-->
+    <!--.jc-person-msg-img {-->
+        <!--display: inline-block;-->
+        <!--width: 40px;-->
+        <!--height: 40px;-->
+        <!--border-radius: 100%;-->
+        <!--vertical-align: middle;-->
+        <!--border: 1px solid $border-normal-color;-->
+        <!--transition: all 300ms ease;-->
+        <!--&:hover {-->
+            <!--transform: rotate(180deg);-->
+        <!--}-->
+    <!--}-->
+    <!--.user-link {-->
+        <!--text-decoration: none;-->
+    <!--}-->
+<!--}-->
+<!--</style>-->

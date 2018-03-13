@@ -37,23 +37,24 @@ export default {
 	}
 }
 </script>
-<style lang="scss">
-    .jc-page-load {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        z-index: 99999;
-        &-bar {
-            position: absolute;
-            width: 0%;
-            height: 100%;
-            transition: all 500ms ease;
-            background: red;
-            &.is-active {
-                width: 99%
-            }
-        }
-    }
-</style>
+<!--<style lang="scss" type="text/scss" rel="stylesheet/scss" >-->
+    <!--@import "../assert/css/var";-->
+    <!--.jc-page-load {-->
+        <!--position: fixed;-->
+        <!--top: 0;-->
+        <!--left: 0;-->
+        <!--width: 100%;-->
+        <!--height: 3px;-->
+        <!--z-index: 99999;-->
+        <!--&-bar {-->
+            <!--position: absolute;-->
+            <!--width: 0%;-->
+            <!--height: 100%;-->
+            <!--transition: all 500ms ease;-->
+            <!--background: red;-->
+            <!--&.is-active {-->
+                <!--width: 99%-->
+            <!--}-->
+        <!--}-->
+    <!--}-->
+<!--</style>-->

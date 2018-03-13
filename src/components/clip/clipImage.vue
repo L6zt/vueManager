@@ -238,100 +238,100 @@
        }
    }
 </script>
-<style lang="scss">
-    @import "../../assert/css/index";
-        .jc-clip-image{
-            position: relative;
-            width: 100%;
-            margin: 0 auto;
-            canvas {
-                position: relative;
-                width: 100%;
-                height: 100%;
-                cursor: pointer;
-                box-shadow: 0 0 3px $box-shadow-dark-color;
-            }
-            input {
-                display: none;
-            }
-            .base64-hidden {
-                position: absolute;
-                top: 0;
-                left: 0;
-                display: block;
-                width: 100%;
-                height: auto;
-                z-index: -999;
-                opacity: 0;
-            }
-            .clip-scale-btn {
-              position: relative;
-             @include clear-fix;
-             margin-bottom: 5px;
-                text-align: center;
-                a {
-                    float: left;
-                    width: 20px;
-                    height: 20px;
-                    border-radius: 50%;
-                    color: #fff;
-                    background: #49a9ee;
-                    text-align: center;
-                    cursor: pointer;
-                }
-             &>.poor, &>.right-rotate {
-                float: right;
-             }
+<!--<style lang="scss">-->
+    <!--@import "../../assert/css/index";-->
+        <!--.jc-clip-image{-->
+            <!--position: relative;-->
+            <!--width: 100%;-->
+            <!--margin: 0 auto;-->
+            <!--canvas {-->
+                <!--position: relative;-->
+                <!--width: 100%;-->
+                <!--height: 100%;-->
+                <!--cursor: pointer;-->
+                <!--box-shadow: 0 0 3px $box-shadow-dark-color;-->
+            <!--}-->
+            <!--input {-->
+                <!--display: none;-->
+            <!--}-->
+            <!--.base64-hidden {-->
+                <!--position: absolute;-->
+                <!--top: 0;-->
+                <!--left: 0;-->
+                <!--display: block;-->
+                <!--width: 100%;-->
+                <!--height: auto;-->
+                <!--z-index: -999;-->
+                <!--opacity: 0;-->
+            <!--}-->
+            <!--.clip-scale-btn {-->
+              <!--position: relative;-->
+             <!--@include clear-fix;-->
+             <!--margin-bottom: 5px;-->
+                <!--text-align: center;-->
+                <!--a {-->
+                    <!--float: left;-->
+                    <!--width: 20px;-->
+                    <!--height: 20px;-->
+                    <!--border-radius: 50%;-->
+                    <!--color: #fff;-->
+                    <!--background: #49a9ee;-->
+                    <!--text-align: center;-->
+                    <!--cursor: pointer;-->
+                <!--}-->
+             <!--&>.poor, &>.right-rotate {-->
+                <!--float: right;-->
+             <!--}-->
 
-            &>span{
-            position: absolute;
-            z-index: -9;
-            top: 0;
-            left: 0;
-               display: block;
-               position: relative;
-                width: 100%;
-                 text-align: center;
-               height: 20px;
-               line-height: 20px;
-            }
-            }
-            .upload-warp {
-             position: relative;
-             @include clear-fix;
-            .upload-btn,.upload-make-true {
-                    float: left;
-                    display:inline-block;
-                    width: 40%;
-                    height: 25px;
-                    line-height: 25px;
-                    color: #fff;
-                    border-radius: 5px;
-                    background: #49a9ee;
-                    box-shadow: 0 0 0 #333;
-                    text-align: center;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    margin: auto;
-                    cursor: pointer;
-                    margin-top: 5px;
-                }
-                .upload-make-true {
-                    float: right;
-                }
-            }
-            .to-send-file {
-                margin-top: 5px;
-                display: block;
-                width: 50px;
-                height: 25px;
-                line-height: 25px;
-                color: #fff;
-                border-radius: 5px;
-                background: #49a9ee;
-                cursor: pointer;
-            }
-        }
-</style>
+            <!--&>span{-->
+            <!--position: absolute;-->
+            <!--z-index: -9;-->
+            <!--top: 0;-->
+            <!--left: 0;-->
+               <!--display: block;-->
+               <!--position: relative;-->
+                <!--width: 100%;-->
+                 <!--text-align: center;-->
+               <!--height: 20px;-->
+               <!--line-height: 20px;-->
+            <!--}-->
+            <!--}-->
+            <!--.upload-warp {-->
+             <!--position: relative;-->
+             <!--@include clear-fix;-->
+            <!--.upload-btn,.upload-make-true {-->
+                    <!--float: left;-->
+                    <!--display:inline-block;-->
+                    <!--width: 40%;-->
+                    <!--height: 25px;-->
+                    <!--line-height: 25px;-->
+                    <!--color: #fff;-->
+                    <!--border-radius: 5px;-->
+                    <!--background: #49a9ee;-->
+                    <!--box-shadow: 0 0 0 #333;-->
+                    <!--text-align: center;-->
+                    <!--top: 0;-->
+                    <!--left: 0;-->
+                    <!--right: 0;-->
+                    <!--bottom: 0;-->
+                    <!--margin: auto;-->
+                    <!--cursor: pointer;-->
+                    <!--margin-top: 5px;-->
+                <!--}-->
+                <!--.upload-make-true {-->
+                    <!--float: right;-->
+                <!--}-->
+            <!--}-->
+            <!--.to-send-file {-->
+                <!--margin-top: 5px;-->
+                <!--display: block;-->
+                <!--width: 50px;-->
+                <!--height: 25px;-->
+                <!--line-height: 25px;-->
+                <!--color: #fff;-->
+                <!--border-radius: 5px;-->
+                <!--background: #49a9ee;-->
+                <!--cursor: pointer;-->
+            <!--}-->
+        <!--}-->
+<!--</style>-->

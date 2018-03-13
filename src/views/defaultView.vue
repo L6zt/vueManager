@@ -102,7 +102,7 @@
         components: {mainNav}
 	}
 </script>
-<style>
+<style lang="scss">
     .all-manager-msg-container{
 
     }
